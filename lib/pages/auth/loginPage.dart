@@ -1,4 +1,5 @@
 import 'package:coinwise/pages/auth/registerPage.dart';
+import 'package:coinwise/pages/dashboard/dashboard_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +14,10 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromRGBO(229, 235, 243, 1),
+        backgroundColor: const Color.fromRGBO(229, 235, 243, 1),
         body: ListView(
           children: [
-            SizedBox(height: 10), // Adjust the height as needed
+            const SizedBox(height: 10), // Adjust the height as needed
             Center(
               child: Image.asset(
                 'assets/images/logo_auth.png',
@@ -107,7 +108,13 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 onPressed: () {
-                  // Untuk submit
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          const DashboardScreen(),
+                    ),
+                  );
                 },
                 child: const Text(
                   'Masuk',
