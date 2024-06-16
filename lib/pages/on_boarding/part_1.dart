@@ -1,39 +1,37 @@
+import 'package:coinwise/pages/on_boarding/part_2.dart';
 import 'package:flutter/material.dart';
 
-class part_3 extends StatefulWidget {
-  const part_3({super.key});
+class part_1 extends StatefulWidget {
+  const part_1({super.key});
 
   @override
-  State<part_3> createState() => _part_3State();
+  State<part_1> createState() => _part_1State();
 }
 
-class _part_3State extends State<part_3> {
+class _part_1State extends State<part_1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 35),
-          child: SizedBox(
-            width: 145,
-            height: 50,
-            child: FloatingActionButton.extended(
-              label: Text(
-                "Get started",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    letterSpacing: 0.5,
-                    fontWeight: FontWeight.w300),
-              ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 5, 20),
+          height: 70,
+          width: 70,
+          child: FittedBox(
+            child: FloatingActionButton(
               onPressed: () {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const part_3(),
+                      builder: (BuildContext context) => const part_2(),
                     ));
               },
               backgroundColor: Color.fromRGBO(2, 62, 138, 1),
+              shape: CircleBorder(side: BorderSide.none),
+              child: Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -49,29 +47,29 @@ class _part_3State extends State<part_3> {
                 SizedBox(
                   height: 60,
                 ),
-                Image.asset("assets/images/animasi_3.png"),
+                Image.asset("assets/images/animasi_1.png"),
                 SizedBox(
                   height: 50,
                 ),
                 Image.asset(
-                  "assets/images/indikator_board3.png",
+                  "assets/images/indikator_board.png",
                 ),
                 SizedBox(
                   height: 50,
                 ),
                 Text(
-                  "Pemahaman investasi",
+                  "Semua dalam satu aplikasi",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  "Materi edukasi yang berkualitas ",
+                  "Akses semua metode pembelajaranmu",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 ),
                 Text(
-                  "mengenai teknologi dan investasi crypto.",
+                  "dalam satu aplikasi",
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                 )
               ],

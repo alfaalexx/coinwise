@@ -1,14 +1,14 @@
-import 'package:coinwise/on_boarding/part_2.dart';
+import 'package:coinwise/pages/on_boarding/part_3.dart';
 import 'package:flutter/material.dart';
 
-class part_1 extends StatefulWidget {
-  const part_1({super.key});
+class part_2 extends StatefulWidget {
+  const part_2({super.key});
 
   @override
-  State<part_1> createState() => _part_1State();
+  State<part_2> createState() => _part_2State();
 }
 
-class _part_1State extends State<part_1> {
+class _part_2State extends State<part_2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +23,7 @@ class _part_1State extends State<part_1> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const part_2(),
+                      builder: (BuildContext context) => const part_3(),
                     ));
               },
               backgroundColor: Color.fromRGBO(2, 62, 138, 1),
@@ -47,29 +47,29 @@ class _part_1State extends State<part_1> {
                 SizedBox(
                   height: 60,
                 ),
-                Image.asset("assets/images/animasi_1.png"),
+                Image.asset("assets/images/animasi_2.png"),
                 SizedBox(
                   height: 50,
                 ),
                 Image.asset(
-                  "assets/images/indikator_board.png",
+                  "assets/images/indikator_board2.png",
                 ),
                 SizedBox(
                   height: 50,
                 ),
                 Text(
-                  "Semua dalam satu aplikasi",
+                  "Pemahaman investasi",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  "Akses semua metode pembelajaranmu",
+                  "Materi edukasi yang berkualitas ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 ),
                 Text(
-                  "dalam satu aplikasi",
+                  "mengenai teknologi dan investasi crypto.",
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                 )
               ],

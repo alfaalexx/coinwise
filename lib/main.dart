@@ -1,26 +1,71 @@
-import 'package:coinwise/on_boarding/part_1.dart';
+import 'package:coinwise/pages/on_boarding/part_1.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:coinwise/pages/splash/splash_screen.dart';
+import 'package:coinwise/pages/auth/login_screen.dart';
+import 'package:coinwise/pages/auth/register_screen.dart';
+import 'package:coinwise/pages/dashboard/dashboard_screen.dart'; // Import DashboardScreen
 
 void main() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
     return MaterialApp(
-      initialRoute: '/part_1',
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            final user = snapshot.data;
+            if (user == null) {
+              return SplashScreen(
+                onInitializationComplete: () {
+                  // Navigasi ke layar Login setelah splash screen selesai
+                  navigatorKey.currentState?.pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => const part_1(),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return SplashScreen(
+                onInitializationComplete: () {
+                  // Navigasi ke halaman Dashboard setelah splash screen selesai
+                  navigatorKey.currentState?.pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => const DashboardScreen(),
+                    ),
+                  );
+                },
+              );
+            }
+          } else {
+            return const MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
       routes: {
-        '/part_1': (context) => part_1(),
-        // ... (rute lainnya)
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/dashboard': (context) =>
+            const DashboardScreen(), // Tambahkan rute untuk DashboardScreen
+        // Tambahkan rute lain jika diperlukan
       },
-      // Pastikan untuk menambahkan onUnknownRoute jika Anda tidak mengaturnya
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
           builder: (context) => Scaffold(

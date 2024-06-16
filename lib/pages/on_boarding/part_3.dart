@@ -1,37 +1,40 @@
-import 'package:coinwise/on_boarding/part_3.dart';
+import 'package:coinwise/pages/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 
-class part_2 extends StatefulWidget {
-  const part_2({super.key});
+class part_3 extends StatefulWidget {
+  const part_3({super.key});
 
   @override
-  State<part_2> createState() => _part_2State();
+  State<part_3> createState() => _part_3State();
 }
 
-class _part_2State extends State<part_2> {
+class _part_3State extends State<part_3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 5, 20),
-          height: 70,
-          width: 70,
-          child: FittedBox(
-            child: FloatingActionButton(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 35),
+          child: SizedBox(
+            width: 145,
+            height: 50,
+            child: FloatingActionButton.extended(
+              label: Text(
+                "Get started",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.w300),
+              ),
               onPressed: () {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const part_3(),
+                      builder: (BuildContext context) => const LoginScreen(),
                     ));
               },
               backgroundColor: Color.fromRGBO(2, 62, 138, 1),
-              shape: CircleBorder(side: BorderSide.none),
-              child: Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-              ),
             ),
           ),
         ),
@@ -47,12 +50,12 @@ class _part_2State extends State<part_2> {
                 SizedBox(
                   height: 60,
                 ),
-                Image.asset("assets/images/animasi_2.png"),
+                Image.asset("assets/images/animasi_3.png"),
                 SizedBox(
                   height: 50,
                 ),
                 Image.asset(
-                  "assets/images/indikator_board2.png",
+                  "assets/images/indikator_board3.png",
                 ),
                 SizedBox(
                   height: 50,

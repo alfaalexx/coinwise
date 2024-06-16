@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'coinwise-7816b.appspot.com',
     measurementId: 'G-MQ4155XLP5',
   );
+
 }
