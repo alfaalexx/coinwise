@@ -1,15 +1,15 @@
-import 'package:coinwise/login/loginPage.dart';
+import 'package:coinwise/pages/auth/registerPage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<Login> createState() => _LoginState();
 }
 
-class _RegisterState extends State<Register> {
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,51 +24,19 @@ class _RegisterState extends State<Register> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0),
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // INPUT NAMA
-                  Text(
-                    'Nama',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 3.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Masukkan nama lengkap',
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Image.asset(
-                          'assets/images/name_icon.png',
-                          width: 24,
-                          height: 24,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 10.0),
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-
                   // INPUT EMAIL
-                  Text(
+                  const Text(
                     'Email',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 3.0),
+                  const SizedBox(height: 3.0),
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'user123@gmail.com',
@@ -86,21 +54,21 @@ class _RegisterState extends State<Register> {
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10.0),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
 
                   // INPUT SANDI
-                  Text(
+                  const Text(
                     'Kata sandi',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 3.0),
+                  const SizedBox(height: 3.0),
                   TextField(
                     decoration: InputDecoration(
                       hintText: '••••••••',
@@ -118,55 +86,22 @@ class _RegisterState extends State<Register> {
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10.0),
                     ),
                   ),
-                  SizedBox(height: 10.0),
-
-                  // INPUT KOMFIRMASI SANDI
-                  Text(
-                    'Konfirmasi kata andi',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 3.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: '••••••••',
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Image.asset(
-                          'assets/images/password.png',
-                          width: 24,
-                          height: 24,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 10.0),
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                 ],
               ),
             ),
 
             // SUBMIT
-            SizedBox(height: 20.0),
             Center(
               child: TextButton(
                 style: TextButton.styleFrom(
-                  backgroundColor: Color(0xFF023E8A),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 120.0),
+                  backgroundColor: const Color(0xFF023E8A),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 120.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
@@ -174,8 +109,8 @@ class _RegisterState extends State<Register> {
                 onPressed: () {
                   // Untuk submit
                 },
-                child: Text(
-                  'Daftar Akun',
+                child: const Text(
+                  'Masuk',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
@@ -184,21 +119,21 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
 
             Center(
               child: RichText(
                 text: TextSpan(
-                  text: 'Sudah memiliki akun? ',
-                  style: TextStyle(
+                  text: 'Belum memiliki akun? ',
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 14.0,
                     fontFamily: 'Montserrat',
                   ),
                   children: [
                     TextSpan(
-                      text: 'Masuk sekarang',
-                      style: TextStyle(
+                      text: 'Daftar sekarang',
+                      style: const TextStyle(
                         color: Color(0xFF023E8A),
                         fontSize: 14.0,
                         fontFamily: 'Montserrat',
@@ -210,7 +145,8 @@ class _RegisterState extends State<Register> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (BuildContext context) => Login(),
+                              builder: (BuildContext context) =>
+                                  const Register(),
                             ),
                           );
                         },

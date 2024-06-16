@@ -1,15 +1,15 @@
-import 'package:coinwise/register/registerPage.dart';
+import 'package:coinwise/pages/auth/loginPage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +24,42 @@ class _LoginState extends State<Login> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30),
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // INPUT NAMA
+                  Text(
+                    'Nama',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 3.0),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Masukkan nama lengkap',
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Image.asset(
+                          'assets/images/name_icon.png',
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10.0),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+
                   // INPUT EMAIL
                   Text(
                     'Email',
@@ -91,11 +123,44 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   SizedBox(height: 10.0),
+
+                  // INPUT KOMFIRMASI SANDI
+                  Text(
+                    'Konfirmasi kata andi',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 3.0),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: '••••••••',
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Image.asset(
+                          'assets/images/password.png',
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10.0),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
                 ],
               ),
             ),
 
             // SUBMIT
+            SizedBox(height: 20.0),
             Center(
               child: TextButton(
                 style: TextButton.styleFrom(
@@ -110,7 +175,7 @@ class _LoginState extends State<Login> {
                   // Untuk submit
                 },
                 child: Text(
-                  'Masuk',
+                  'Daftar Akun',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
@@ -124,7 +189,7 @@ class _LoginState extends State<Login> {
             Center(
               child: RichText(
                 text: TextSpan(
-                  text: 'Belum memiliki akun? ',
+                  text: 'Sudah memiliki akun? ',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.0,
@@ -132,7 +197,7 @@ class _LoginState extends State<Login> {
                   ),
                   children: [
                     TextSpan(
-                      text: 'Daftar sekarang',
+                      text: 'Masuk sekarang',
                       style: TextStyle(
                         color: Color(0xFF023E8A),
                         fontSize: 14.0,
@@ -145,7 +210,7 @@ class _LoginState extends State<Login> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (BuildContext context) => Register(),
+                              builder: (BuildContext context) => Login(),
                             ),
                           );
                         },

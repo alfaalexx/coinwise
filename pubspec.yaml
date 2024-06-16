@@ -34,15 +34,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_native_splash: ^2.4.0
+  flutter_native_splash: ^2.3.7
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  font_awesome_flutter: ^10.7.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter_native_splash:
-  android: true
-  ios: true
-
-  # image: "assets/images/coinwise.png"
-  background_image: "assets/images/Splash_Screen.png"
-  # color: "#023E8A"
+  color: "F5F5F5"
 
 dev_dependencies:
   flutter_test:
@@ -55,8 +54,19 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo_coinwise.png"
+  
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo_coinwise.png"
+  # adaptive_icon_background: "assets/icon/background.png"
+  # adaptive_icon_foreground: "assets/icon/foreground.png"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -67,6 +77,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+<<<<<<< HEAD
     - assets/images/coinwise.png
     - assets/images/Splash_Screen.png
     - assets/images/logo_board.png
@@ -82,6 +93,10 @@ flutter:
     - assets/images/password.png
     - assets/images/name_icon.png
 
+=======
+    - assets/images/
+    - assets/videos/
+>>>>>>> firebase_auth
 
   #   - images/a_dot_ham.jpeg
 
