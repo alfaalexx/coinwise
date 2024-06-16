@@ -77,26 +77,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-<<<<<<< HEAD
-    - assets/images/coinwise.png
-    - assets/images/Splash_Screen.png
-    - assets/images/logo_board.png
-    - assets/images/logoboard.png
-    - assets/images/animasi_1.png
-    - assets/images/animasi_2.png
-    - assets/images/animasi_3.png
-    - assets/images/indikator_board.png
-    - assets/images/indikator_board2.png
-    - assets/images/indikator_board3.png
-    - assets/images/logo_auth.png
-    - assets/images/email_icon.png
-    - assets/images/password.png
-    - assets/images/name_icon.png
-
-=======
     - assets/images/
     - assets/videos/
->>>>>>> firebase_auth
 
   #   - images/a_dot_ham.jpeg
 
