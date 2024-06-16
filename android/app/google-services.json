@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "762714433094",
+    "project_id": "coinwise-7816b",
+    "storage_bucket": "coinwise-7816b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762714433094:android:29db7668794bc9fbfa8c47",
+        "android_client_info": {
+          "package_name": "com.example.coinwise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnHluaObMDwcyJXnev2AekK17o12syl88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
