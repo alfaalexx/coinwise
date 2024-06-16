@@ -1,3 +1,4 @@
+import 'package:coinwise/register/registerPage.dart';
 import 'package:flutter/material.dart';
 
 class part_3 extends StatefulWidget {
@@ -30,7 +31,7 @@ class _part_3State extends State<part_3> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const part_3(),
+                      builder: (BuildContext context) => const Register(),
                     ));
               },
               backgroundColor: Color.fromRGBO(2, 62, 138, 1),
