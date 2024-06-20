@@ -52,7 +52,7 @@ class _BeritaPageState extends State<BeritaPage> {
                 decoration: InputDecoration(
                   hintText: 'Cari Berita..',
                   filled: true,
-                  fillColor: Color(0xFFF2F2F2),
+                  fillColor: Colors.white,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00000000), width: 2),
                     borderRadius: BorderRadius.circular(12),
