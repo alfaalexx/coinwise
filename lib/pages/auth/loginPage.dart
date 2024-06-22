@@ -12,6 +12,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool _obscureText = true;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +80,7 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 3.0),
                   TextField(
+                    obscureText: _obscureText,
                     decoration: InputDecoration(
                       hintText: 'Kata Sandi',
                       prefixIcon: Padding(
@@ -82,6 +91,11 @@ class _LoginState extends State<Login> {
                           height: 24,
                         ),
                       ),
+                      suffixIcon: IconButton(
+                          icon: Icon(_obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: _toggle),
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
