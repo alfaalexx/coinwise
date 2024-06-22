@@ -1,5 +1,6 @@
 import 'package:coinwise/pages/auth/registerPage.dart';
 import 'package:coinwise/pages/dashboard/dashboard_screen.dart';
+import 'package:coinwise/pages/forgot_password/forgot_password_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -97,6 +98,12 @@ class _LoginState extends State<Login> {
                     child: InkWell(
                       onTap: () {
                         //Navigator ke Forgot Password Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage(),
+                          ),
+                        );
                       },
                       child: Text(
                         "Lupa Kata Sandi?",
