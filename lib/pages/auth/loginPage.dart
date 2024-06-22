@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 3.0),
                   TextField(
                     decoration: InputDecoration(
-                      hintText: '••••••••',
+                      hintText: 'Kata Sandi',
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
@@ -92,6 +92,21 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(height: 10.0),
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    child: InkWell(
+                      onTap: () {
+                        //Navigator ke Forgot Password Page
+                      },
+                      child: Text(
+                        "Lupa Kata Sandi?",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.lightBlue,
+                            decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
