@@ -103,7 +103,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 3.0),
                   TextField(
                     decoration: InputDecoration(
-                      hintText: '••••••••',
+                      hintText: 'Masukkan Kata Sandi Anda',
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
@@ -126,7 +126,7 @@ class _RegisterState extends State<Register> {
 
                   // INPUT KOMFIRMASI SANDI
                   const Text(
-                    'Konfirmasi kata andi',
+                    'Konfirmasi Kata Sandi',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -135,7 +135,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 3.0),
                   TextField(
                     decoration: InputDecoration(
-                      hintText: '••••••••',
+                      hintText: 'Konfirmasi Kata Sandi Anda',
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
