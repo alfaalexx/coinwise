@@ -1,3 +1,4 @@
+import 'package:coinwise/pages/profile/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:coinwise/widget/drawer_content_page.dart';
 
@@ -28,6 +29,12 @@ class _BeritaPageState extends State<BeritaPage> {
             child: InkWell(
               onTap: () {
                 //navigator ke profile page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ),
+                );
               },
               borderRadius: BorderRadius.circular(30.0),
               child: ClipRRect(
