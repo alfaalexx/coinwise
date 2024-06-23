@@ -1,5 +1,8 @@
 import 'package:coinwise/pages/profile/edit_profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -9,6 +12,56 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String displayName = "Loading...";
+  String email = "Loading...";
+  String aboutMe = "Loading...";
+  String profileImageUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadProfileData();
+  }
+
+  void loadProfileData() async {
+    final User? currentUser = _auth.currentUser;
+
+    if (currentUser != null) {
+      final String currentUid = currentUser.uid;
+      final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('profile')
+          .doc(currentUid)
+          .get();
+
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          displayName = data['username'];
+          email = data['email'];
+          profileImageUrl = data['profile_image'] ?? "";
+          aboutMe = data['about_me']; // Ambil URL gambar profil jika tersedia
+        });
+      } else {
+        print('Data profil tidak ditemukan');
+      }
+    }
+  }
+
+  void _openEditProfilePage() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfilePage(),
+      ),
+    );
+
+    if (result != null && result) {
+      // Memuat ulang data profil jika result tidak null dan true
+      loadProfileData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +112,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                   2, 2, 2, 2),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
-                                child: Image.asset(
-                                    "assets/images/defaultAvatar.png"),
+                                child: profileImageUrl.isNotEmpty
+                                    ? CachedNetworkImage(
+                                        imageUrl: profileImageUrl,
+                                        placeholder: (context, url) =>
+                                            CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        "assets/images/defaultAvatar.png"),
                               ),
                             ),
                           ),
@@ -73,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Username",
+                                  displayName,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
@@ -92,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       //Deskripsi User
                       Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        aboutMe,
                       ),
                       const SizedBox(height: 20),
                       Row(
@@ -110,12 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EditProfilePage(),
-                                  ),
-                                );
+                                _openEditProfilePage();
                               },
                               child: const Text(
                                 'Edit Profil',

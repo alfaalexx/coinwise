@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coinwise/pages/auth/loginPage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DrawerContentPage extends StatefulWidget {
   const DrawerContentPage({super.key});
@@ -77,7 +78,16 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
                     padding: const EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
-                      child: Image.asset("assets/images/defaultAvatar.png"),
+                      child: profileImageUrl.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: profileImageUrl,
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset("assets/images/defaultAvatar.png"),
                     ),
                   ),
                 ),

@@ -53,6 +53,7 @@ class _RegisterState extends State<RegisterPage> {
         'uid': userCredential.user!.uid,
         'username': _name,
         'email': _email,
+        'about_me': "Default",
         'isAdmin': false,
       });
 

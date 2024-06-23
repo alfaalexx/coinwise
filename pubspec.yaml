@@ -41,6 +41,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   cached_network_image: ^3.3.1
   cloud_firestore: ^4.14.0
+  firebase_storage: ^11.6.0
+  image_picker: ^1.0.8
 
 flutter_native_splash:
   color: "F5F5F5"

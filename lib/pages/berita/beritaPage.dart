@@ -1,6 +1,9 @@
 import 'package:coinwise/pages/profile/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:coinwise/widget/drawer_content_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BeritaPage extends StatefulWidget {
   const BeritaPage({super.key});
@@ -10,6 +13,46 @@ class BeritaPage extends StatefulWidget {
 }
 
 class _BeritaPageState extends State<BeritaPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? user;
+  String displayName = "Loading...";
+  String email = "Loading...";
+  String profileImageUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Handle unauthenticated user if needed
+    }
+    loadProfileData();
+  }
+
+  void loadProfileData() async {
+    final User? currentUser = _auth.currentUser;
+
+    if (currentUser != null) {
+      final String currentUid = currentUser.uid;
+      final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('profile')
+          .doc(currentUid)
+          .get();
+
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          displayName = data['username'];
+          email = data['email'];
+          profileImageUrl = data['profile_image'] ??
+              ""; // Ambil URL gambar profil jika tersedia
+        });
+      } else {
+        print('Data profil tidak ditemukan');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,11 +82,26 @@ class _BeritaPageState extends State<BeritaPage> {
               borderRadius: BorderRadius.circular(30.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
-                child: Image.asset(
-                  "assets/images/defaultAvatar.png",
-                  width: 40,
-                  height: 40,
-                ),
+                child: profileImageUrl.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: profileImageUrl,
+                        placeholder: (context, url) => SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.0,
+                              color: Colors.black,
+                            )),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset("assets/images/defaultAvatar.png",
+                        width: 40, height: 40),
               ),
             ),
           ),
