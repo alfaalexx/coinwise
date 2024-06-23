@@ -4,14 +4,14 @@ import 'package:coinwise/pages/forgot_password/forgot_password_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<LoginPage> {
   bool _obscureText = true;
 
   void _toggle() {
@@ -189,7 +189,7 @@ class _LoginState extends State<Login> {
                             context,
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  const Register(),
+                                  const RegisterPage(),
                             ),
                           );
                         },

@@ -31,7 +31,7 @@ class _part_3State extends State<part_3> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const Login(),
+                      builder: (BuildContext context) => const LoginPage(),
                     ));
               },
               backgroundColor: const Color.fromRGBO(2, 62, 138, 1),

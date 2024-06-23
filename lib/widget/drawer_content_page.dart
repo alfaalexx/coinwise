@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coinwise/pages/auth/loginPage.dart';
 
 class DrawerContentPage extends StatefulWidget {
   const DrawerContentPage({super.key});
@@ -8,6 +11,45 @@ class DrawerContentPage extends StatefulWidget {
 }
 
 class _DrawerContentPageState extends State<DrawerContentPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? user;
+  String displayName = "Loading...";
+  String email = "Loading...";
+  String profileImageUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Handle unauthenticated user if needed
+    }
+    loadProfileData();
+  }
+
+  void loadProfileData() async {
+    final User? currentUser = _auth.currentUser;
+
+    if (currentUser != null) {
+      final String currentUid = currentUser.uid;
+      final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('profile')
+          .doc(currentUid)
+          .get();
+
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          displayName = data['username'];
+          email = data['email'];
+          profileImageUrl = data['profile_image'] ?? "";
+        });
+      } else {
+        print('Data profil tidak ditemukan');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -41,12 +83,12 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 50, bottom: 55, left: 16),
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerLeft,
                     child: Column(
                       children: [
                         Text(
-                          "Username",
+                          displayName,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 20,
@@ -95,7 +137,17 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
             title: const Text('Logout'),
             onTap: () {
               // Handle logout
-              Navigator.pop(context);
+              _auth.signOut();
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (context) {
+                return const LoginPage();
+              }), (route) => false);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Logout Successfully'),
+                  backgroundColor: Colors.green,
+                ),
+              );
             },
           ),
         ],
