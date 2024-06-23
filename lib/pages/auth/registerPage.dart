@@ -333,12 +333,18 @@ class _RegisterState extends State<RegisterPage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Masukkan Konfirmasi Kata Sandi Anda';
+                          return "Masukkan Kata Sandi Anda";
                         }
-                        if (value != _password) {
-                          return 'Password tidak sama';
+                        if (value.length < 6) {
+                          return "Kata sandi harus memiliki minimal 6 karakter";
                         }
+                        // Tambahkan kriteria lain yang Anda inginkan di sini
                         return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _password = value;
+                        });
                       },
                     ),
                     const SizedBox(height: 10.0),

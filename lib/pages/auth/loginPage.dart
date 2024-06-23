@@ -30,6 +30,7 @@ class _LoginState extends State<LoginPage> {
           backgroundColor: Colors.red,
         ),
       );
+      return;
     } else if (_password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -37,130 +38,112 @@ class _LoginState extends State<LoginPage> {
           backgroundColor: Colors.red,
         ),
       );
-    } else {
-      try {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: _email,
-          password: _password,
-        );
+      return;
+    }
 
-        if (userCredential.user != null) {
-          // Cek apakah email pengguna sudah diverifikasi.
-          if (mounted) {
-            if (userCredential.user!.emailVerified) {
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) {
-                return const DashboardScreen();
-              }), (route) => false);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Login Successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            } else {
-              // Pengguna belum memverifikasi alamat email mereka.
-              // Tampilkan pesan kesalahan atau tindakan yang sesuai.
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Email Verification Required"),
-                    content:
-                        Text("Please verify your email before logging in."),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text("Resend Email Verification"), // Tombol baru
-                        onPressed: () async {
-                          if (userCredential.user != null &&
-                              !userCredential.user!.emailVerified) {
-                            try {
-                              await userCredential.user!
-                                  .sendEmailVerification();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Email verification sent'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                            } catch (e) {
-                              print("Error sending verification email: $e");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Error resending verification email'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          } else if (userCredential.user != null &&
-                              userCredential.user!.emailVerified) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Email is already verified'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('No user currently signed in'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
-                          Navigator.pop(
-                              context); // Tutup dialog setelah tombol ditekan
-                        },
-                      ),
-                      TextButton(
-                        child: Text("OK"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _email,
+        password: _password,
+      );
 
-            // Logout pengguna karena mereka belum memverifikasi email mereka.
-            await _auth.signOut();
-          }
-        }
-      } on FirebaseAuthException catch (e) {
-        if (mounted) {
-          if (e.code == 'user-not-found') {
-            print("User not found for email: $_email");
-            // Tindakan untuk kesalahan "user not found"
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("No user found for that email."),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else if (e.code == 'wrong-password') {
-            // Tindakan untuk kesalahan "wrong password"
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Wrong password provided for that user."),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        }
-      } catch (e) {
-        if (mounted) {
+      if (userCredential.user != null) {
+        // Cek apakah email pengguna sudah diverifikasi.
+        if (!userCredential.user!.emailVerified) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Email Verification Required"),
+                content: Text("Please verify your email before logging in."),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("Resend Email Verification"),
+                    onPressed: () async {
+                      try {
+                        await userCredential.user!.sendEmailVerification();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Email verification sent'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      } catch (e) {
+                        print("Error sending verification email: $e");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error resending verification email'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      Navigator.pop(context);
+                    },
+                  ),
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          // Email sudah diverifikasi, lanjutkan ke dashboard
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const DashboardScreen()),
+            (route) => false,
+          );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Error During Login: $e"),
-              backgroundColor: Colors.red,
+              content: Text('Login Successfully'),
+              backgroundColor: Colors.green,
             ),
           );
         }
-        // print("Error During Login: $e");
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print("User not found for email: $_email");
+        setState(() {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("No user found for that email."),
+              backgroundColor: Colors.red,
+            ),
+          );
+        });
+      } else if (e.code == 'wrong-password') {
+        setState(() {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Wrong password provided for that user."),
+              backgroundColor: Colors.red,
+            ),
+          );
+        });
+      } else {
+        setState(() {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Error: ${e.message}"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        });
+      }
+    } catch (e) {
+      setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Error During Login: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      });
     }
   }
 
