@@ -1,4 +1,4 @@
-import 'package:coinwise/register/registerPage.dart';
+import 'package:coinwise/pages/auth/loginPage.dart';
 import 'package:flutter/material.dart';
 
 class part_3 extends StatefulWidget {
@@ -19,7 +19,7 @@ class _part_3State extends State<part_3> {
             width: 145,
             height: 50,
             child: FloatingActionButton.extended(
-              label: Text(
+              label: const Text(
                 "Get started",
                 style: TextStyle(
                     color: Colors.white,
@@ -31,47 +31,47 @@ class _part_3State extends State<part_3> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const Register(),
+                      builder: (BuildContext context) => const Login(),
                     ));
               },
-              backgroundColor: Color.fromRGBO(2, 62, 138, 1),
+              backgroundColor: const Color.fromRGBO(2, 62, 138, 1),
             ),
           ),
         ),
-        backgroundColor: Color.fromRGBO(229, 235, 243, 1),
+        backgroundColor: const Color.fromRGBO(229, 235, 243, 1),
         body: ListView(
           children: [
             Image.asset(
               "assets/images/logo_board.png",
-              alignment: Alignment(0, -4.4),
+              alignment: const Alignment(0, -4.4),
             ),
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
                 Image.asset("assets/images/animasi_3.png"),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Image.asset(
                   "assets/images/indikator_board3.png",
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                Text(
+                const Text(
                   "Pemahaman investasi",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
-                Text(
+                const Text(
                   "Materi edukasi yang berkualitas ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 ),
-                Text(
+                const Text(
                   "mengenai teknologi dan investasi crypto.",
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                 )
