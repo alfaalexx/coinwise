@@ -40,6 +40,7 @@ class _RegisterState extends State<Register> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'Masukkan nama lengkap',
+                      hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
@@ -72,6 +73,7 @@ class _RegisterState extends State<Register> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'user123@gmail.com',
+                      hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
@@ -104,6 +106,7 @@ class _RegisterState extends State<Register> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: '••••••••',
+                      hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
@@ -136,6 +139,7 @@ class _RegisterState extends State<Register> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: '••••••••',
+                      hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(

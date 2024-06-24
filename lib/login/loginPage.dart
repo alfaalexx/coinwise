@@ -1,4 +1,5 @@
 import 'package:coinwise/register/registerPage.dart';
+import 'package:coinwise/login/forgetPage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,7 @@ class _LoginState extends State<Login> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'user123@gmail.com',
+                      hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
@@ -72,6 +74,7 @@ class _LoginState extends State<Login> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: '••••••••',
+                      hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
@@ -88,6 +91,29 @@ class _LoginState extends State<Login> {
                       ),
                       contentPadding: EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10.0),
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgetPassword(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Lupa kata sandi?',
+                        style: TextStyle(
+                          color: Color(0xFF023E8A),
+                          fontSize: 14.0,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 10.0),
