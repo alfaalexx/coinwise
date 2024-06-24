@@ -1,3 +1,4 @@
+import 'package:coinwise/pages/komunitas/komunitasPage.dart';
 import 'package:coinwise/pages/on_boarding/part_1.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

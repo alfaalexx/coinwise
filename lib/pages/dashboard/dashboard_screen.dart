@@ -48,7 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             label: 'Berita',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.group),
+            icon: Image(image: AssetImage("assets/images/komunitas.png")),
             label: 'Komunitas',
           ),
         ],
