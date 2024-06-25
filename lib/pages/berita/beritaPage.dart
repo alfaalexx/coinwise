@@ -13,6 +13,7 @@ class BeritaPage extends StatefulWidget {
 }
 
 class _BeritaPageState extends State<BeritaPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
   String displayName = "Loading...";
@@ -61,6 +62,16 @@ class _BeritaPageState extends State<BeritaPage> {
         backgroundColor: const Color(0xffE5EBF3),
         centerTitle: true,
         elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          child: IconButton(
+            icon: Image.asset('assets/images/icon_menu.png'),
+            onPressed: () {
+              // Menggunakan GlobalKey untuk membuka drawer
+              _scaffoldKey.currentState?.openDrawer();
+            },
+          ),
+        ),
         title: Text(
           "CoinWise",
           style: TextStyle(color: Colors.black),

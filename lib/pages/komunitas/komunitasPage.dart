@@ -1,5 +1,6 @@
 import 'package:coinwise/pages/komunitas/komenKomunitas.dart';
 import 'package:coinwise/pages/komunitas/postKomunitas.dart';
+import 'package:coinwise/widget/drawer_content_page.dart';
 import 'package:flutter/material.dart';
 
 class KomunitasPage extends StatefulWidget {
@@ -32,7 +33,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
       ),
       backgroundColor: Color.fromRGBO(229, 235, 243, 1),
       key: _scaffoldKey,
-      drawer: Drawer(),
+      drawer: DrawerContentPage(),
       appBar: AppBar(
         toolbarHeight: 90,
         backgroundColor: Color.fromRGBO(229, 235, 243, 1),
