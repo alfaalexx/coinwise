@@ -1,7 +1,13 @@
 import 'package:coinwise/pages/komunitas/komenKomunitas.dart';
 import 'package:coinwise/pages/komunitas/postKomunitas.dart';
+import 'package:coinwise/pages/profile/profilePage.dart';
 import 'package:coinwise/widget/drawer_content_page.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class KomunitasPage extends StatefulWidget {
   const KomunitasPage({super.key});
@@ -13,10 +19,76 @@ class KomunitasPage extends StatefulWidget {
 class _KomunitasPageState extends State<KomunitasPage> {
   // Membuat GlobalKey untuk ScaffoldState
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? user;
+  String displayName = "Loading...";
+  String email = "Loading...";
+  String profileImageUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Handle unauthenticated user if needed
+    }
+    loadProfileData();
+  }
+
+  void loadProfileData() async {
+    final User? currentUser = _auth.currentUser;
+
+    if (currentUser != null) {
+      final String currentUid = currentUser.uid;
+      final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('profile')
+          .doc(currentUid)
+          .get();
+
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          displayName = data['username'];
+          email = data['email'];
+          profileImageUrl = data['profile_image'] ??
+              ""; // Ambil URL gambar profil jika tersedia
+        });
+      } else {
+        print('Data profil tidak ditemukan');
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>?> getUserProfileData(String uid) async {
+    try {
+      DocumentSnapshot userProfileSnapshot =
+          await FirebaseFirestore.instance.collection('profile').doc(uid).get();
+
+      if (userProfileSnapshot.exists) {
+        return userProfileSnapshot.data() as Map<String, dynamic>?;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error getting user profile data: $e');
+      return null;
+    }
+  }
+
+  // Function untuk mengubah timestamp menjadi format tanggal
+  String _formatTimestamp(dynamic timestamp) {
+    if (timestamp is Timestamp) {
+      DateTime dateTime = timestamp.toDate();
+      return timeago
+          .format(dateTime); // Ini akan menghasilkan format "time ago"
+    }
+    return '';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //button untuk ke halaman post komunitas
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -35,7 +107,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
       key: _scaffoldKey,
       drawer: DrawerContentPage(),
       appBar: AppBar(
-        toolbarHeight: 90,
+        elevation: 0,
         backgroundColor: Color.fromRGBO(229, 235, 243, 1),
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -62,588 +134,228 @@ class _KomunitasPageState extends State<KomunitasPage> {
                     borderRadius: BorderRadius.circular(15))),
           ),
         ),
-        actions: [
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-            child: IconButton(
-              onPressed: () {},
-              icon: Image.asset("assets/images/notif_icon.png"),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: InkWell(
+              onTap: () {
+                //navigator ke profile page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(30.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: profileImageUrl.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: profileImageUrl,
+                        placeholder: (context, url) => SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.0,
+                              color: Colors.black,
+                            )),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset("assets/images/defaultAvatar.png",
+                        width: 40, height: 40),
+              ),
             ),
-          )
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // AWAL CARD KOMUNITAS
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-              width: 420,
-              height: 200,
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                          child: CircleAvatar(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+      body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('post_community')
+              .orderBy('created_at', descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            final posts = snapshot.data!.docs;
+
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                var post = posts[index];
+                var data = post.data() as Map<String, dynamic>;
+
+                // Dapatkan uid pengguna dari data postingan
+                String uid = data['uid'];
+
+                return FutureBuilder(
+                  future: getUserProfileData(uid),
+                  builder:
+                      (context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (!snapshot.hasData || snapshot.data == null) {
+                      return Center(child: Text('Profile data not found'));
+                    }
+
+                    var userProfile = snapshot.data!;
+                    String userName = userProfile['username'] ?? 'User';
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: Column(
                           children: [
-                            Text(
-                              "Naya Rafeza",
-                              style: TextStyle(fontWeight: FontWeight.w600),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                        userProfile['profile_image'] ?? '',
+                                      ),
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        userName,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        "Wirausaha • ${_formatTimestamp(data['created_at'])}",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300,
+                                            color: Color.fromRGBO(
+                                                131, 131, 131, 1)),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              "Wirausaha • 12h",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 0, 15, 3),
+                                child: Text(
+                                  data['postTitle'] ?? '',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 0, 15, 3),
+                                child: Text(
+                                  data['postDescription'] ?? '',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              indent: 15,
+                              endIndent: 15,
+                              color: Color.fromRGBO(139, 139, 139, 1),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(15, 0, 0, 10),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.thumb_up_alt_outlined),
+                                      SizedBox(width: 5),
+                                      Text("50k"),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.remove_red_eye_outlined),
+                                      SizedBox(width: 5),
+                                      Text("100k"),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 2, 15, 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Komenkomunitas(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.fromLTRB(16, 5, 0, 5),
+                                      height: 28,
+                                      width: 190,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromRGBO(229, 235, 243, 1),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        "Tambahkan Komentar...",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          letterSpacing: 0.3,
+                                          color:
+                                              Color.fromRGBO(131, 131, 131, 1),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             )
                           ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 3),
-                    child: Text(
-                      "Berinvestasi dalam aset kripto mengandung risiko "
-                      "yang cukup tinggi. Sesuai sifatnya, nilai aset kripto "
-                      "sangat volatile, bisa saja mengalami peningkatan "
-                      "maupun penurunan nilai yang sangat drastis dalam",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    indent: 15,
-                    endIndent: 15,
-                    color: Color.fromRGBO(139, 139, 139, 1),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.thumb_up_alt_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("50k"),
-                          ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.remove_red_eye_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("100k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 2, 15, 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Komenkomunitas(),
-                                ));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(16, 5, 0, 5),
-                            height: 28,
-                            width: 190,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(229, 235, 243, 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Tambahkan Komentar...",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  letterSpacing: 0.3,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            // container selanjutnya belum pakai extract widget
-            // AWAL CARD KOMUNITAS
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-              width: 420,
-              height: 140,
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                          child: CircleAvatar(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Aishiteru",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "Mahasiswa • 20h",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 3),
-                    child: Text(
-                      "Rekomendasi course untuk pemula apa ya?",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    indent: 15,
-                    endIndent: 15,
-                    color: Color.fromRGBO(139, 139, 139, 1),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.thumb_up_alt_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("73k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.remove_red_eye_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("190k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 2, 15, 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Komenkomunitas(),
-                                ));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(16, 5, 0, 5),
-                            height: 28,
-                            width: 190,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(229, 235, 243, 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Tambahkan Komentar...",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  letterSpacing: 0.3,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            // AWAL CARD KOMUNITAS
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-              width: 420,
-              height: 200,
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                          child: CircleAvatar(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Naya Rafeza",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "Wirausaha • 12h",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 3),
-                    child: Text(
-                      "Berinvestasi dalam aset kripto mengandung risiko "
-                      "yang cukup tinggi. Sesuai sifatnya, nilai aset kripto "
-                      "sangat volatile, bisa saja mengalami peningkatan "
-                      "maupun penurunan nilai yang sangat drastis dalam",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    indent: 15,
-                    endIndent: 15,
-                    color: Color.fromRGBO(139, 139, 139, 1),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.thumb_up_alt_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("50k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.remove_red_eye_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("100k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 2, 15, 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Komenkomunitas(),
-                                ));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(16, 5, 0, 5),
-                            height: 28,
-                            width: 190,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(229, 235, 243, 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Tambahkan Komentar...",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  letterSpacing: 0.3,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            // container selanjutnya belum pakai extract widget
-            // AWAL CARD KOMUNITAS
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-              width: 420,
-              height: 200,
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                          child: CircleAvatar(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Naya Rafeza",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "Wirausaha • 12h",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 3),
-                    child: Text(
-                      "Berinvestasi dalam aset kripto mengandung risiko "
-                      "yang cukup tinggi. Sesuai sifatnya, nilai aset kripto "
-                      "sangat volatile, bisa saja mengalami peningkatan "
-                      "maupun penurunan nilai yang sangat drastis dalam",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    indent: 15,
-                    endIndent: 15,
-                    color: Color.fromRGBO(139, 139, 139, 1),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.thumb_up_alt_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("50k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.remove_red_eye_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("100k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 2, 15, 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Komenkomunitas(),
-                                ));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(16, 5, 0, 5),
-                            height: 28,
-                            width: 190,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(229, 235, 243, 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Tambahkan Komentar...",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  letterSpacing: 0.3,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            // container selanjutnya belum pakai extract widget
-            // AWAL CARD KOMUNITAS
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-              width: 420,
-              height: 200,
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                          child: CircleAvatar(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Naya Rafeza",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "Wirausaha • 12h",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 3),
-                    child: Text(
-                      "Berinvestasi dalam aset kripto mengandung risiko "
-                      "yang cukup tinggi. Sesuai sifatnya, nilai aset kripto "
-                      "sangat volatile, bisa saja mengalami peningkatan "
-                      "maupun penurunan nilai yang sangat drastis dalam",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    indent: 15,
-                    endIndent: 15,
-                    color: Color.fromRGBO(139, 139, 139, 1),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.thumb_up_alt_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("50k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.remove_red_eye_outlined),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("100k"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 2, 15, 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Komenkomunitas(),
-                                ));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(16, 5, 0, 5),
-                            height: 28,
-                            width: 190,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(229, 235, 243, 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Tambahkan Komentar...",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  letterSpacing: 0.3,
-                                  color: Color.fromRGBO(131, 131, 131, 1)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            // container selanjutnya belum pakai extract widget
-          ],
-        ),
-      ),
+                    );
+                  },
+                );
+              },
+            );
+          }),
     );
   }
 }

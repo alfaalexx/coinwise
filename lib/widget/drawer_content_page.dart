@@ -82,9 +82,9 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
                           ? CachedNetworkImage(
                               imageUrl: profileImageUrl,
                               placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
+                                  const CircularProgressIndicator(),
                               errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                                  const Icon(Icons.error),
                               fit: BoxFit.cover,
                             )
                           : Image.asset("assets/images/defaultAvatar.png"),
