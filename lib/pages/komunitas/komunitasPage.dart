@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class KomunitasPage extends StatefulWidget {
@@ -24,6 +23,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
   String displayName = "Loading...";
   String email = "Loading...";
   String profileImageUrl = "";
+  String searchQuery = "";
 
   @override
   void initState() {
@@ -85,6 +85,12 @@ class _KomunitasPageState extends State<KomunitasPage> {
     return '';
   }
 
+  void performSearch(String query) {
+    setState(() {
+      searchQuery = query;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +104,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
               ));
         },
         backgroundColor: Color.fromRGBO(2, 62, 138, 1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -109,6 +116,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Color.fromRGBO(229, 235, 243, 1),
+        iconTheme: const IconThemeData(color: Colors.black),
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
           child: IconButton(
@@ -122,6 +130,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
         title: Container(
           height: 40,
           child: TextField(
+            onChanged: performSearch,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -187,10 +196,18 @@ class _KomunitasPageState extends State<KomunitasPage> {
 
             final posts = snapshot.data!.docs;
 
+            List<DocumentSnapshot> filteredPosts = posts.where((post) {
+              var data = post.data() as Map<String, dynamic>;
+              String postTitle = data['postTitle'] ?? '';
+              return postTitle
+                  .toLowerCase()
+                  .contains(searchQuery.toLowerCase());
+            }).toList();
+
             return ListView.builder(
-              itemCount: posts.length,
+              itemCount: filteredPosts.length,
               itemBuilder: (context, index) {
-                var post = posts[index];
+                var post = filteredPosts[index];
                 var data = post.data() as Map<String, dynamic>;
 
                 // Dapatkan uid pengguna dari data postingan
@@ -221,14 +238,38 @@ class _KomunitasPageState extends State<KomunitasPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 0, 10, 5),
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                        userProfile['profile_image'] ?? '',
+                                      backgroundColor: Colors.grey[200],
+                                      radius: 20,
+                                      child: ClipOval(
+                                        child: userProfile['profile_image'] !=
+                                                    null &&
+                                                userProfile['profile_image']
+                                                    .isNotEmpty
+                                            ? CachedNetworkImage(
+                                                imageUrl: userProfile[
+                                                    'profile_image'],
+                                                placeholder: (context, url) =>
+                                                    const CircularProgressIndicator(),
+                                                errorWidget: (context, url,
+                                                        error) =>
+                                                    Image.asset(
+                                                        'assets/images/defaultAvatar.png'),
+                                                fit: BoxFit.cover,
+                                                width: 40,
+                                                height: 40,
+                                              )
+                                            : Image.asset(
+                                                'assets/images/defaultAvatar.png',
+                                                fit: BoxFit.cover,
+                                                width: 40,
+                                                height: 40,
+                                              ),
                                       ),
                                     ),
                                   ),
@@ -279,6 +320,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                   ),
+                                  maxLines: 5,
                                 ),
                               ),
                             ),

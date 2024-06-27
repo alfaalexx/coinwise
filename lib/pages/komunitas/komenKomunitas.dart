@@ -49,9 +49,12 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
       backgroundColor: Color.fromRGBO(229, 235, 243, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(229, 235, 243, 1),
+        iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 0,
         title: Text(
           "Postingan",
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+          style: TextStyle(
+              fontSize: 17, fontWeight: FontWeight.w700, color: Colors.black),
         ),
       ),
       body: Stack(
@@ -163,6 +166,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                 ),
               ),
               // container selanjut nya belum pakai extract widget
+
               Container(
                 width: 420,
                 decoration: BoxDecoration(color: Colors.white),
@@ -175,26 +179,55 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                           padding: const EdgeInsets.fromLTRB(10, 15, 6, 0),
                           child: CircleAvatar(),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(2, 15, 5, 6),
-                              padding: EdgeInsets.all(8),
-                              width: 340,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(229, 235, 243, 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(2, 15, 5, 6),
+                                padding: EdgeInsets.all(8),
+                                width: 340,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(229, 235, 243, 1),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Reza Rahardian",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "founder starup",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                          color:
+                                              Color.fromRGBO(131, 131, 131, 1)),
+                                    ),
+                                    SizedBox(
+                                      height: 6,
+                                    ),
+                                    Text(
+                                      "Untuk  itu,  diperlukan  pemahaman  yang "
+                                      "baik  bagi  masyarakat  termasuk manfaat, "
+                                      "potensi,  dan  risiko  dari  perdagangan "
+                                      "aset  kripto. Biar tidak salah prediksinya berinvestasi",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Row(
                                 children: [
-                                  Text(
-                                    "Reza Rahardian",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
+                                  SizedBox(
+                                    width: 5,
                                   ),
                                   Text(
-                                    "founder starup",
+                                    "3h ago",
                                     style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w300,
@@ -202,321 +235,57 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                                             Color.fromRGBO(131, 131, 131, 1)),
                                   ),
                                   SizedBox(
-                                    height: 6,
+                                    width: 15,
                                   ),
-                                  Text(
-                                    "Untuk  itu,  diperlukan  pemahaman  yang "
-                                    "baik  bagi  masyarakat  termasuk manfaat, "
-                                    "potensi,  dan  risiko  dari  perdagangan "
-                                    "aset  kripto. Biar tidak salah prediksinya berinvestasi",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                                  TextButton(
+                                      onPressed: () {},
+                                      style: TextButton.styleFrom(
+                                        minimumSize: Size.zero,
+                                        padding: EdgeInsets.zero,
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                      child: Text(
+                                        "Balas",
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(2, 62, 138, 1),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12),
+                                      )),
+                                  SizedBox(width: 205),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.thumb_up_alt_outlined,
+                                        size: 20,
+                                      ),
+                                      Text(" 33")
+                                    ],
                                   )
                                 ],
                               ),
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "3h ago",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w300,
-                                      color: Color.fromRGBO(131, 131, 131, 1)),
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                TextButton(
-                                    onPressed: () {},
-                                    style: TextButton.styleFrom(
-                                      minimumSize: Size.zero,
-                                      padding: EdgeInsets.zero,
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    child: Text(
-                                      "Balas",
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(2, 62, 138, 1),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12),
-                                    )),
-                                SizedBox(width: 205),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.thumb_up_alt_outlined,
-                                      size: 20,
-                                    ),
-                                    Text(" 33")
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 4, 0, 5),
-                              width: 75,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromRGBO(2, 62, 138, 1)),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 2, 6, 6),
-                                child: Text(
-                                  "2 Basalan",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 420,
-                decoration: BoxDecoration(color: Colors.white),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 15, 6, 0),
-                          child: CircleAvatar(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(2, 15, 5, 6),
-                              padding: EdgeInsets.all(8),
-                              width: 340,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(229, 235, 243, 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Reza Rahardian",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  Text(
-                                    "founder starup",
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 4, 0, 5),
+                                width: 75,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color.fromRGBO(2, 62, 138, 1)),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 2, 6, 6),
+                                  child: Text(
+                                    "2 Basalan",
                                     style: TextStyle(
+                                        color: Colors.white,
                                         fontSize: 12,
-                                        fontWeight: FontWeight.w300,
-                                        color:
-                                            Color.fromRGBO(131, 131, 131, 1)),
+                                        fontWeight: FontWeight.w400),
                                   ),
-                                  SizedBox(
-                                    height: 6,
-                                  ),
-                                  Text(
-                                    "Untuk  itu,  diperlukan  pemahaman  yang "
-                                    "baik  bagi  masyarakat  termasuk manfaat, "
-                                    "potensi,  dan  risiko  dari  perdagangan "
-                                    "aset  kripto. Biar tidak salah prediksinya berinvestasi",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 5,
                                 ),
-                                Text(
-                                  "3h ago",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w300,
-                                      color: Color.fromRGBO(131, 131, 131, 1)),
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                TextButton(
-                                    onPressed: () {},
-                                    style: TextButton.styleFrom(
-                                      minimumSize: Size.zero,
-                                      padding: EdgeInsets.zero,
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    child: Text(
-                                      "Balas",
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(2, 62, 138, 1),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12),
-                                    )),
-                                SizedBox(width: 205),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.thumb_up_alt_outlined,
-                                      size: 20,
-                                    ),
-                                    Text(" 33")
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 4, 0, 5),
-                              width: 75,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromRGBO(2, 62, 138, 1)),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 2, 6, 6),
-                                child: Text(
-                                  "2 Basalan",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 420,
-                decoration: BoxDecoration(color: Colors.white),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 15, 6, 0),
-                          child: CircleAvatar(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(2, 15, 5, 6),
-                              padding: EdgeInsets.all(8),
-                              width: 340,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(229, 235, 243, 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Reza Rahardian",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  Text(
-                                    "founder starup",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w300,
-                                        color:
-                                            Color.fromRGBO(131, 131, 131, 1)),
-                                  ),
-                                  SizedBox(
-                                    height: 6,
-                                  ),
-                                  Text(
-                                    "Untuk  itu,  diperlukan  pemahaman  yang "
-                                    "baik  bagi  masyarakat  termasuk manfaat, "
-                                    "potensi,  dan  risiko  dari  perdagangan "
-                                    "aset  kripto. Biar tidak salah prediksinya berinvestasi",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "3h ago",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w300,
-                                      color: Color.fromRGBO(131, 131, 131, 1)),
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                TextButton(
-                                    onPressed: () {},
-                                    style: TextButton.styleFrom(
-                                      minimumSize: Size.zero,
-                                      padding: EdgeInsets.zero,
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    child: Text(
-                                      "Balas",
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(2, 62, 138, 1),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12),
-                                    )),
-                                SizedBox(width: 205),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.thumb_up_alt_outlined,
-                                      size: 20,
-                                    ),
-                                    Text(" 33")
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(10, 4, 0, 5),
-                              width: 75,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromRGBO(2, 62, 138, 1)),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 2, 6, 6),
-                                child: Text(
-                                  "2 Basalan",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -540,7 +309,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                           style: BorderStyle.solid,
                           color: Color.fromRGBO(217, 217, 217, 1)))),
               padding: EdgeInsets.fromLTRB(20, 12, 0, 12),
-              height: 60,
+              height: 70,
               child: Row(
                 children: [
                   Expanded(
