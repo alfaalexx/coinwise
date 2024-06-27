@@ -8,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+
 class KomunitasPage extends StatefulWidget {
   const KomunitasPage({super.key});
 
@@ -354,6 +355,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
                                     ],
                                   ),
                                 ),
+                                //button ke halaman komen komunitas
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 2, 15, 10),
@@ -363,7 +365,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const Komenkomunitas(),
+                                              Komenkomunitas(postId: post.id),
                                         ),
                                       );
                                     },
