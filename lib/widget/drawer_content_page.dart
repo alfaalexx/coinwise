@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coinwise/pages/auth/loginPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/widgets.dart';
 
 class DrawerContentPage extends StatefulWidget {
   const DrawerContentPage({super.key});
@@ -26,6 +27,64 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
       // Handle unauthenticated user if needed
     }
     loadProfileData();
+  }
+
+  // Function to log out the user
+  void _logout(BuildContext context) async {
+    // Show a confirmation dialog
+    bool confirmLogout = await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(20)),
+          backgroundColor: Color.fromRGBO(248, 248, 248, 1),
+          title: Text('Konfirmasi Keluar'),
+          content: Text('Apakah Anda yakin ingin keluar?'),
+          actions: <Widget>[
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                      Color.fromRGBO(232, 232, 232, 1))),
+              onPressed: () {
+                // Jika pengguna memilih "Ya", set nilai true
+                Navigator.of(context).pop(true);
+              },
+              child: Text('Ya', style: TextStyle(color: Colors.red)),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                      Color.fromRGBO(232, 232, 232, 1))),
+              onPressed: () {
+                // Jika pengguna memilih "Tidak", set nilai false
+                Navigator.of(context).pop(false);
+              },
+              child: Text(
+                'Tidak',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    // Jika pengguna mengkonfirmasi keluar, hapus data login dan navigasikan ke halaman login
+    if (confirmLogout == true) {
+      // Handle logout
+      _auth.signOut();
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return const LoginPage();
+      }), (route) => false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Logout Successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
   }
 
   void loadProfileData() async {
@@ -58,15 +117,15 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(top: 20.0),
+            margin: const EdgeInsets.only(top: 30.0),
             padding:
                 const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 4),
             color: Colors.transparent, // Background color
             child: Row(
               children: [
                 Container(
-                  width: 70,
-                  height: 70,
+                  width: 60,
+                  height: 60,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
@@ -92,23 +151,26 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 50, bottom: 55, left: 16),
+                  margin: const EdgeInsets.only(top: 30, bottom: 25, left: 16),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           displayName,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
                           ),
                         ),
                         Text(
-                          "Status Member",
+                          "Non-Member",
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 10,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
                           ),
                         ),
                       ],
@@ -117,6 +179,10 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
                 ),
               ],
             ),
+          ),
+          Divider(
+            color: Color.fromRGBO(131, 131, 131, 1),
+            height: 1,
           ),
           ListTile(
             leading: const Icon(Icons.home),
@@ -127,8 +193,8 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.article),
-            title: const Text('Berita'),
+            leading: const Icon(Icons.history),
+            title: const Text('Riwayat'),
             onTap: () {
               // Navigate to the news page
               Navigator.pop(context);
@@ -136,29 +202,24 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
+            title: const Text('Setelan'),
             onTap: () {
               // Navigate to the settings page
               Navigator.pop(context);
             },
           ),
+          SizedBox(
+            height: 420,
+          ),
           ListTile(
-            leading: const Icon(Icons.exit_to_app),
-            title: const Text('Logout'),
-            onTap: () {
-              // Handle logout
-              _auth.signOut();
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) {
-                return const LoginPage();
-              }), (route) => false);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Logout Successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            },
+            leading:
+                const Image(image: AssetImage("assets/images/logout_icon.png")),
+            title: const Text(
+              'Keluar',
+              style: TextStyle(
+                  color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16),
+            ),
+            onTap: () => _logout(context),
           ),
         ],
       ),

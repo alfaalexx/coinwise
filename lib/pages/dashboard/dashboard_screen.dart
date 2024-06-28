@@ -35,21 +35,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
-        items: const [
+        selectedItemColor: Color.fromRGBO(2, 62, 138, 1),
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: _currentIndex == 0
+                ? Image.asset(
+                    "assets/images/beranda_aktif.png",
+                    color: Color.fromRGBO(2, 62, 138, 1),
+                  )
+                : Image.asset("assets/images/beranda_icon.png"),
             label: 'Beranda',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+            icon: _currentIndex == 1
+                ? Image.asset(
+                    "assets/images/course_icon.png",
+                    color: Color.fromRGBO(2, 62, 138, 1),
+                  )
+                : Image.asset("assets/images/course_icon.png"),
             label: 'Course',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.article),
+            icon: _currentIndex == 2
+                ? Image.asset(
+                    "assets/images/berita_icon.png",
+                    color: Color.fromRGBO(2, 62, 138, 1),
+                  )
+                : Image.asset("assets/images/berita_icon.png"),
             label: 'Berita',
           ),
           BottomNavigationBarItem(
-            icon: Image(image: AssetImage("assets/images/komunitas.png")),
+            icon: _currentIndex == 3
+                ? Image.asset(
+                    "assets/images/komunitas.png",
+                    color: Color.fromRGBO(2, 62, 138, 1),
+                  )
+                : Image.asset("assets/images/komunitas.png"),
             label: 'Komunitas',
           ),
         ],
