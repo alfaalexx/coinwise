@@ -260,448 +260,509 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
           ),
         ],
       ),
-      body: Stack(
+      body: Column(
         children: [
-          FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('post_community')
-                .doc(widget.postId)
-                .get(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Konten post dan komentar
+                  FutureBuilder<DocumentSnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collection('post_community')
+                        .doc(widget.postId)
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
 
-              var data = snapshot.data!.data() as Map<String, dynamic>;
+                      if (!snapshot.hasData) {
+                        return Center(child: Text('Data not found'));
+                      }
 
-              String uid = data['uid'];
+                      var data = snapshot.data!.data() as Map<String, dynamic>;
 
-              return FutureBuilder(
-                future: getUserProfileData(uid),
-                builder:
-                    (context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
+                      String uid = data['uid'];
 
-                  if (!snapshot.hasData || snapshot.data == null) {
-                    return Center(child: Text('Profile data not found'));
-                  }
-
-                  var userProfile = snapshot.data!;
-                  String userName = userProfile['username'] ?? 'User';
-                  return ListView(
-                    controller: _scrollController,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        decoration: BoxDecoration(color: Colors.white),
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.grey[200],
-                                      radius: 20,
-                                      child: ClipOval(
-                                        child: userProfile['profile_image'] !=
-                                                    null &&
-                                                userProfile['profile_image']
-                                                    .isNotEmpty
-                                            ? CachedNetworkImage(
-                                                imageUrl: userProfile[
-                                                    'profile_image'],
-                                                placeholder: (context, url) =>
-                                                    const CircularProgressIndicator(),
-                                                errorWidget: (context, url,
-                                                        error) =>
-                                                    Image.asset(
-                                                        'assets/images/defaultAvatar.png'),
-                                                fit: BoxFit.cover,
-                                                width: 40,
-                                                height: 40,
-                                              )
-                                            : Image.asset(
-                                                'assets/images/defaultAvatar.png',
-                                                fit: BoxFit.cover,
-                                                width: 40,
-                                                height: 40,
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        userName,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        "Wirausaha • ${_formatTimestamp(data['created_at'])}",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w300,
-                                            color: Color.fromRGBO(
-                                                131, 131, 131, 1)),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 0, 15, 3),
-                                child: Text(
-                                  data['postTitle'] ?? '',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 0, 15, 3),
-                                child: Text(
-                                  data['postDescription'] ?? '',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  maxLines: 5,
-                                ),
-                              ),
-                            ),
-                            // Menampilkan gambar jika tersedia
-                            if (data['postCommunityImage'] != 'noImage' &&
-                                data['postCommunityImage']!.isNotEmpty)
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    14, 14, 0, 14),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: CachedNetworkImage(
-                                    imageUrl: data['postCommunityImage']!,
-                                    fit: BoxFit.cover,
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 200,
-                                    placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
-                                  ),
-                                ),
-                              ),
-                            // Menampilkan placeholder jika gambar tidak tersedia
-
-                            Divider(
-                              indent: 15,
-                              endIndent: 15,
-                              color: Color.fromRGBO(139, 139, 139, 1),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(15, 0, 0, 10),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.thumb_up_alt_outlined),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text("50k"),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.remove_red_eye_outlined),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text("100k"),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 2, 15, 10),
-                                  child: Container(
-                                    padding: EdgeInsets.fromLTRB(16, 5, 0, 5),
-                                    height: 28,
-                                    width: 190,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Text(
-                                      "Tambahkan Komentar...",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          letterSpacing: 0.3,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      // Menampilkan komentar-komentar dari collection comment_community
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('comment_community')
-                            .where('postId', isEqualTo: widget.postId)
-                            .orderBy('createdAt', descending: true)
-                            .snapshots(),
-                        builder: (context, commentSnapshot) {
-                          if (commentSnapshot.connectionState ==
+                      return FutureBuilder(
+                        future: getUserProfileData(uid),
+                        builder: (context,
+                            AsyncSnapshot<Map<String, dynamic>?>
+                                userProfileSnapshot) {
+                          if (userProfileSnapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
 
-                          if (commentSnapshot.hasError) {
+                          if (!userProfileSnapshot.hasData ||
+                              userProfileSnapshot.data == null) {
                             return Center(
-                                child: Text('Error: ${commentSnapshot.error}'));
+                                child: Text('Profile data not found'));
                           }
 
-                          var commentDocs = commentSnapshot.data?.docs ?? [];
+                          var userProfile = userProfileSnapshot.data!;
+                          String userName = userProfile['username'] ?? 'User';
 
-                          if (commentDocs.isEmpty) {
-                            return Center(child: Text('Belum ada komentar'));
-                          }
-
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: commentDocs.length,
-                            itemBuilder: (context, index) {
-                              var commentData = commentDocs[index].data()
-                                  as Map<String, dynamic>?;
-                              if (commentData == null) return SizedBox();
-                              String commenterUid = commentData['uid'];
-
-                              return FutureBuilder(
-                                future: getUserProfileData(commenterUid),
-                                builder: (context,
-                                    AsyncSnapshot<Map<String, dynamic>?>
-                                        userSnapshot) {
-                                  if (userSnapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return ListTile(
-                                      title: Text('Loading...'),
-                                    );
-                                  }
-
-                                  if (!userSnapshot.hasData ||
-                                      userSnapshot.data == null) {
-                                    return ListTile(
-                                      title: Text('User not found'),
-                                    );
-                                  }
-
-                                  var commenterProfile = userSnapshot.data!;
-                                  String commenterName =
-                                      commenterProfile['username'] ?? 'User';
-                                  String commentText =
-                                      commentData['commentText'] ?? '';
-                                  String commentCreatedAt = _formatTimestamp(
-                                      commentData['createdAt']);
-
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Container(
-                                      decoration:
-                                          BoxDecoration(color: Colors.white),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          10, 15, 6, 0),
-                                                  child: CircleAvatar(
-                                                    backgroundColor:
-                                                        Colors.grey[200],
-                                                    radius: 20,
-                                                    child: ClipOval(
-                                                      child: commenterProfile[
-                                                                      'profile_image'] !=
-                                                                  null &&
-                                                              commenterProfile[
-                                                                      'profile_image']
-                                                                  .isNotEmpty
-                                                          ? CachedNetworkImage(
-                                                              imageUrl:
-                                                                  commenterProfile[
-                                                                      'profile_image'],
-                                                              placeholder: (context,
-                                                                      url) =>
-                                                                  const CircularProgressIndicator(),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  Image.asset(
-                                                                      'assets/images/defaultAvatar.png'),
-                                                              fit: BoxFit.cover,
-                                                              width: 40,
-                                                              height: 40,
-                                                            )
-                                                          : Image.asset(
-                                                              'assets/images/defaultAvatar.png',
-                                                              fit: BoxFit.cover,
-                                                              width: 40,
-                                                              height: 40,
-                                                            ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Flexible(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        margin:
-                                                            EdgeInsets.fromLTRB(
-                                                                2, 15, 5, 6),
-                                                        padding:
-                                                            EdgeInsets.all(8),
-                                                        width: 340,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Color.fromRGBO(
-                                                              229, 235, 243, 1),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              commenterName,
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            ),
-                                                            Text(
-                                                              "founder starup",
-                                                              style: TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        131,
-                                                                        131,
-                                                                        131,
-                                                                        1),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 6,
-                                                            ),
-                                                            Text(
-                                                              commentText,
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontSize: 14),
-                                                            )
-                                                          ],
-                                                        ),
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                10, 0, 10, 5),
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.grey[200],
+                                              radius: 20,
+                                              child: ClipOval(
+                                                child: userProfile[
+                                                                'profile_image'] !=
+                                                            null &&
+                                                        userProfile[
+                                                                'profile_image']
+                                                            .isNotEmpty
+                                                    ? CachedNetworkImage(
+                                                        imageUrl: userProfile[
+                                                            'profile_image'],
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            const CircularProgressIndicator(),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Image.asset(
+                                                                'assets/images/defaultAvatar.png'),
+                                                        fit: BoxFit.cover,
+                                                        width: 40,
+                                                        height: 40,
+                                                      )
+                                                    : Image.asset(
+                                                        'assets/images/defaultAvatar.png',
+                                                        fit: BoxFit.cover,
+                                                        width: 40,
+                                                        height: 40,
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 10,
-                                                                right: 10),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              commentCreatedAt,
-                                                              style: TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        131,
-                                                                        131,
-                                                                        131,
-                                                                        1),
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .thumb_up_alt_outlined,
-                                                                  size: 20,
-                                                                ),
-                                                                Text(" 33")
-                                                              ],
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                userName,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              Text(
+                                                "Wirausaha • ${_formatTimestamp(data['created_at'])}",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: Color.fromRGBO(
+                                                        131, 131, 131, 1)),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 0, 15, 3),
+                                        child: Text(
+                                          data['postTitle'] ?? '',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
                                     ),
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 0, 15, 3),
+                                        child: Text(
+                                          data['postDescription'] ?? '',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          maxLines: 5,
+                                        ),
+                                      ),
+                                    ),
+                                    // Menampilkan gambar jika tersedia
+                                    if (data['postCommunityImage'] !=
+                                            'noImage' &&
+                                        data['postCommunityImage']!.isNotEmpty)
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            14, 14, 0, 14),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                data['postCommunityImage']!,
+                                            fit: BoxFit.cover,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 200,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                          ),
+                                        ),
+                                      ),
+                                    // Menampilkan placeholder jika gambar tidak tersedia
+
+                                    Divider(
+                                      indent: 15,
+                                      endIndent: 15,
+                                      color: Color.fromRGBO(139, 139, 139, 1),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 0, 0, 10),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.thumb_up_alt_outlined),
+                                              SizedBox(width: 5),
+                                              Text("50k"),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 0, 0, 10),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons
+                                                  .remove_red_eye_outlined),
+                                              SizedBox(width: 5),
+                                              Text("100k"),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              10, 2, 15, 10),
+                                          child: Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                16, 5, 0, 5),
+                                            height: 28,
+                                            width: 190,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Text(
+                                              "Tambahkan Komentar...",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                letterSpacing: 0.3,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Menampilkan komentar-komentar dari collection comment_community
+                              StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection('comment_community')
+                                    .where('postId', isEqualTo: widget.postId)
+                                    .orderBy('createdAt', descending: true)
+                                    .snapshots(),
+                                builder: (context, commentSnapshot) {
+                                  if (commentSnapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
+
+                                  if (commentSnapshot.hasError) {
+                                    return Center(
+                                        child: Text(
+                                            'Error: ${commentSnapshot.error}'));
+                                  }
+
+                                  var commentDocs =
+                                      commentSnapshot.data?.docs ?? [];
+
+                                  if (commentDocs.isEmpty) {
+                                    return Center(
+                                        child: Text('Belum ada komentar'));
+                                  }
+
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: commentDocs.length,
+                                    itemBuilder: (context, index) {
+                                      var commentData = commentDocs[index]
+                                          .data() as Map<String, dynamic>?;
+                                      if (commentData == null)
+                                        return SizedBox();
+                                      String commenterUid = commentData['uid'];
+
+                                      return FutureBuilder(
+                                        future:
+                                            getUserProfileData(commenterUid),
+                                        builder: (context,
+                                            AsyncSnapshot<Map<String, dynamic>?>
+                                                userSnapshot) {
+                                          if (userSnapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return ListTile(
+                                              title: Text('Loading...'),
+                                            );
+                                          }
+
+                                          if (!userSnapshot.hasData ||
+                                              userSnapshot.data == null) {
+                                            return ListTile(
+                                              title: Text('User not found'),
+                                            );
+                                          }
+
+                                          var commenterProfile =
+                                              userSnapshot.data!;
+                                          String commenterName =
+                                              commenterProfile['username'] ??
+                                                  'User';
+                                          String commentText =
+                                              commentData['commentText'] ?? '';
+                                          String commentCreatedAt =
+                                              _formatTimestamp(
+                                                  commentData['createdAt']);
+
+                                          return Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .fromLTRB(
+                                                                  10, 15, 6, 0),
+                                                          child: CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .grey[200],
+                                                            radius: 20,
+                                                            child: ClipOval(
+                                                              child: commenterProfile[
+                                                                              'profile_image'] !=
+                                                                          null &&
+                                                                      commenterProfile[
+                                                                              'profile_image']
+                                                                          .isNotEmpty
+                                                                  ? CachedNetworkImage(
+                                                                      imageUrl:
+                                                                          commenterProfile[
+                                                                              'profile_image'],
+                                                                      placeholder:
+                                                                          (context, url) =>
+                                                                              const CircularProgressIndicator(),
+                                                                      errorWidget: (context,
+                                                                              url,
+                                                                              error) =>
+                                                                          Image.asset(
+                                                                              'assets/images/defaultAvatar.png'),
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      width: 40,
+                                                                      height:
+                                                                          40,
+                                                                    )
+                                                                  : Image.asset(
+                                                                      'assets/images/defaultAvatar.png',
+                                                                      fit: BoxFit
+                                                                          .cover,
+                                                                      width: 40,
+                                                                      height:
+                                                                          40,
+                                                                    ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Flexible(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets
+                                                                    .fromLTRB(
+                                                                        2,
+                                                                        15,
+                                                                        5,
+                                                                        6),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(8),
+                                                                width: 340,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                          229,
+                                                                          235,
+                                                                          243,
+                                                                          1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      commenterName,
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    ),
+                                                                    Text(
+                                                                      "founder starup",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w300,
+                                                                        color: Color.fromRGBO(
+                                                                            131,
+                                                                            131,
+                                                                            131,
+                                                                            1),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            6),
+                                                                    Text(
+                                                                      commentText,
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              14),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      commentCreatedAt,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w300,
+                                                                        color: Color.fromRGBO(
+                                                                            131,
+                                                                            131,
+                                                                            131,
+                                                                            1),
+                                                                      ),
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .thumb_up_alt_outlined,
+                                                                          size:
+                                                                              20,
+                                                                        ),
+                                                                        Text(
+                                                                            " 33")
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
+                              ),
+                            ],
                           );
                         },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
           // Input komentar
           AnimatedPositioned(
@@ -711,12 +772,15 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
             right: 0,
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                      top: BorderSide(
-                          width: 1,
-                          style: BorderStyle.solid,
-                          color: Color.fromRGBO(217, 217, 217, 1)))),
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    width: 1,
+                    style: BorderStyle.solid,
+                    color: Color.fromRGBO(217, 217, 217, 1),
+                  ),
+                ),
+              ),
               padding: EdgeInsets.fromLTRB(20, 12, 0, 12),
               height: 70,
               child: Row(
@@ -725,17 +789,20 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                     child: TextField(
                       controller: _commentController,
                       decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromRGBO(229, 235, 243, 1),
-                          hintText: "Tuliskan komentar...",
-                          hintStyle: TextStyle(
-                              color: Colors.black,
-                              height: 3.5,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(15))),
+                        filled: true,
+                        fillColor: Color.fromRGBO(229, 235, 243, 1),
+                        hintText: "Tuliskan komentar...",
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          height: 3.5,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
                     ),
                   ),
                   IconButton(
