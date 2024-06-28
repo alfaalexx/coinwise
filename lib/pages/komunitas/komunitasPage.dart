@@ -8,7 +8,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-
 class KomunitasPage extends StatefulWidget {
   const KomunitasPage({super.key});
 

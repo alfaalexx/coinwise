@@ -77,5 +77,4 @@ dependencies {
     // // When using the BoM, you don't specify versions in Firebase library dependencies
     // implementation("com.google.firebase:firebase-appcheck-playintegrity")
     implementation('com.android.support:multidex:1.0.3')
-    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 }
