@@ -1,3 +1,5 @@
+import 'package:coinwise/pages/beranda/berandaPage.dart';
+import 'package:coinwise/pages/profile/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -134,20 +136,32 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
                       width: 2, // Lebar border
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: profileImageUrl.isNotEmpty
-                          ? CachedNetworkImage(
-                              imageUrl: profileImageUrl,
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset("assets/images/defaultAvatar.png"),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Navigasi ke halaman detail profil
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProfilePage(), // Ganti dengan halaman detail profil Anda
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: profileImageUrl.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl: profileImageUrl,
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset("assets/images/defaultAvatar.png"),
+                      ),
                     ),
                   ),
                 ),
@@ -190,7 +204,8 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
             title: const Text('Beranda'),
             onTap: () {
               // Navigate to the home page
-              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BerandaPage()));
             },
           ),
           ListTile(
