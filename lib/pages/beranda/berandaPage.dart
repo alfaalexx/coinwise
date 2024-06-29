@@ -217,27 +217,61 @@ class _BerandaPageState extends State<BerandaPage> {
                                               10, 28, 6, 0),
                                           child: CircleAvatar(),
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  2, 20, 5, 6),
-                                              padding: EdgeInsets.all(8),
-                                              width: 340,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                        Flexible(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    2, 20, 5, 6),
+                                                padding: EdgeInsets.all(8),
+                                                width: 340,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Reza Rahardian",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    Text(
+                                                      "founder starup",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          color: Color.fromRGBO(
+                                                              131,
+                                                              131,
+                                                              131,
+                                                              1)),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    Text(
+                                                      "Untuk  itu,  diperlukan  pemahaman  yang "
+                                                      "baik  bagi  masyarakat  termasuk manfaat, "
+                                                      "potensi,  dan  risiko  dari  perdagangan "
+                                                      "aset  kripto. Biar tidak salah prediksinya berinvestasi",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 14),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
                                                 children: [
-                                                  Text(
-                                                    "Reza Rahardian",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600),
+                                                  SizedBox(
+                                                    width: 5,
                                                   ),
                                                   Text(
-                                                    "founder starup",
+                                                    "3h ago",
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
@@ -246,94 +280,72 @@ class _BerandaPageState extends State<BerandaPage> {
                                                             131, 131, 131, 1)),
                                                   ),
                                                   SizedBox(
-                                                    height: 6,
+                                                    width: 15,
                                                   ),
-                                                  Text(
-                                                    "Untuk  itu,  diperlukan  pemahaman  yang "
-                                                    "baik  bagi  masyarakat  termasuk manfaat, "
-                                                    "potensi,  dan  risiko  dari  perdagangan "
-                                                    "aset  kripto. Biar tidak salah prediksinya berinvestasi",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 14),
+                                                  TextButton(
+                                                      onPressed: () {},
+                                                      style:
+                                                          TextButton.styleFrom(
+                                                        minimumSize: Size.zero,
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        tapTargetSize:
+                                                            MaterialTapTargetSize
+                                                                .shrinkWrap,
+                                                      ),
+                                                      child: Text(
+                                                        "Balas",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    2,
+                                                                    62,
+                                                                    138,
+                                                                    1),
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontSize: 12),
+                                                      )),
+                                                  SizedBox(width: 205),
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .thumb_up_alt_outlined,
+                                                        size: 20,
+                                                      ),
+                                                      Text(" 33")
+                                                    ],
                                                   )
                                                 ],
                                               ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 5,
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 4, 0, 5),
+                                                width: 75,
+                                                height: 22,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: Color.fromRGBO(
+                                                        2, 62, 138, 1)),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10, 2, 6, 6),
+                                                  child: Text(
+                                                    "2 Basalan",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                                 ),
-                                                Text(
-                                                  "3h ago",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      color: Color.fromRGBO(
-                                                          131, 131, 131, 1)),
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                TextButton(
-                                                    onPressed: () {},
-                                                    style: TextButton.styleFrom(
-                                                      minimumSize: Size.zero,
-                                                      padding: EdgeInsets.zero,
-                                                      tapTargetSize:
-                                                          MaterialTapTargetSize
-                                                              .shrinkWrap,
-                                                    ),
-                                                    child: Text(
-                                                      "Balas",
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              2, 62, 138, 1),
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 12),
-                                                    )),
-                                                SizedBox(width: 205),
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons
-                                                          .thumb_up_alt_outlined,
-                                                      size: 20,
-                                                    ),
-                                                    Text(" 33")
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  10, 4, 0, 5),
-                                              width: 75,
-                                              height: 22,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: Color.fromRGBO(
-                                                      2, 62, 138, 1)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        10, 2, 6, 6),
-                                                child: Text(
-                                                  "2 Basalan",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ),
-                                            )
-                                          ],
+                                              )
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
