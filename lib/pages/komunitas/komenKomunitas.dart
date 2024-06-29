@@ -309,7 +309,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                 decoration: BoxDecoration(color: Colors.white),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -583,7 +583,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                                                           padding:
                                                               const EdgeInsets
                                                                   .fromLTRB(
-                                                                  10, 15, 6, 0),
+                                                                  0, 15, 6, 0),
                                                           child: CircleAvatar(
                                                             backgroundColor:
                                                                 Colors
