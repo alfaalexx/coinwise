@@ -17,6 +17,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String email = "Loading...";
   String aboutMe = "Loading...";
   String profileImageUrl = "";
+  bool isMember = false;
 
   @override
   void initState() {
@@ -40,7 +41,8 @@ class _ProfilePageState extends State<ProfilePage> {
           displayName = data['username'];
           email = data['email'];
           profileImageUrl = data['profile_image'] ?? "";
-          aboutMe = data['about_me']; // Ambil URL gambar profil jika tersedia
+          aboutMe = data['about_me'];
+          isMember = data['isMember']; // Ambil URL gambar profil jika tersedia
         });
       } else {
         print('Data profil tidak ditemukan');
@@ -143,7 +145,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 4, 0, 0),
-                                  child: Text("Member"),
+                                  child: Text(
+                                    isMember ? "Member" : "Non-Member",
+                                  ),
                                 ),
                               ],
                             ),

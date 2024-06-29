@@ -304,6 +304,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
 
                           var userProfile = userProfileSnapshot.data!;
                           String userName = userProfile['username'] ?? 'User';
+                          bool isMember = userProfile['isMember'] ?? false;
 
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,7 +368,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                                                         FontWeight.w600),
                                               ),
                                               Text(
-                                                "Wirausaha • ${_formatTimestamp(data['created_at'])}",
+                                                "${isMember ? "Member" : "Non-Member"} • ${_formatTimestamp(data['created_at'])}",
                                                 style: TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w300,
@@ -562,6 +563,9 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                                           String commentCreatedAt =
                                               _formatTimestamp(
                                                   commentData['createdAt']);
+                                          bool commentisMember =
+                                              commenterProfile['isMember'] ??
+                                                  false;
 
                                           return Padding(
                                             padding:
@@ -667,7 +671,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                                                                               FontWeight.w600),
                                                                     ),
                                                                     Text(
-                                                                      "founder starup",
+                                                                      "${isMember ? "Member" : "Non-Member"}",
                                                                       style:
                                                                           TextStyle(
                                                                         fontSize:

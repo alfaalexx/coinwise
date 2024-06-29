@@ -18,6 +18,7 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
   String displayName = "Loading...";
   String email = "Loading...";
   String profileImageUrl = "";
+  bool isMember = false;
 
   @override
   void initState() {
@@ -166,7 +167,7 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
                           ),
                         ),
                         Text(
-                          "Non-Member",
+                          isMember ? "Member" : "Non-Member",
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w300,

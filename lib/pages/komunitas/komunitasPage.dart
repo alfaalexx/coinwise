@@ -227,6 +227,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
 
                     var userProfile = snapshot.data!;
                     String userName = userProfile['username'] ?? 'User';
+                    bool isMember = userProfile['isMember'] ?? false;
 
                     return Padding(
                       padding: const EdgeInsets.only(top: 8),
@@ -283,7 +284,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
                                             fontWeight: FontWeight.w600),
                                       ),
                                       Text(
-                                        "Wirausaha • ${_formatTimestamp(data['created_at'])}",
+                                        "${isMember ? "Member" : "Non-Member"} • ${_formatTimestamp(data['created_at'])}",
                                         style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w300,

@@ -55,6 +55,7 @@ class _RegisterState extends State<RegisterPage> {
         'email': _email,
         'about_me': "Default",
         'isAdmin': false,
+        'isMember': false,
       });
 
       // Beralih ke halaman login (atau tindakan yang sesuai).
