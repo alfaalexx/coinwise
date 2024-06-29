@@ -102,7 +102,7 @@ class _KomenkomunitasState extends State<Komenkomunitas> {
                       String imageUrl = data['postCommunityImage'];
 
                       // Hapus gambar dari Firebase Storage jika ada
-                      if (imageUrl != null && imageUrl != 'noImage') {
+                      if (imageUrl != 'noImage') {
                         FirebaseStorage.instance
                             .refFromURL(imageUrl)
                             .delete()

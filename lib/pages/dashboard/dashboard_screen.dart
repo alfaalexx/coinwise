@@ -1,5 +1,4 @@
 import 'package:coinwise/pages/beranda/berandaPage.dart';
-import 'package:coinwise/pages/berita/beritaPage.dart';
 import 'package:coinwise/pages/berita/news_page.dart';
 import 'package:coinwise/pages/course/coursePage.dart';
 import 'package:coinwise/pages/komunitas/komunitasPage.dart';
