@@ -269,7 +269,7 @@ class _CoursePageState extends State<CoursePage> {
                                         topRight: Radius.circular(10.0),
                                       ),
                                       child: Image.asset(
-                                        'assets/images/thumbnail_2.jpg', // Replace with your image URL
+                                        'assets/images/thumbnail_2.png', // Replace with your image URL
                                         width: 150,
                                         height: 100,
                                         fit: BoxFit.cover,
