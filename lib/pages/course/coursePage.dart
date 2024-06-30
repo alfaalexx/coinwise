@@ -1,3 +1,4 @@
+import 'package:coinwise/pages/course/detailCoursePage.dart';
 import 'package:flutter/material.dart';
 
 class CoursePage extends StatefulWidget {
@@ -10,6 +11,13 @@ class CoursePage extends StatefulWidget {
 class _CoursePageState extends State<CoursePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Course Page'));
+    return Center(
+        child: TextButton(
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailCoursePage(),
+                )),
+            child: Text("Detail")));
   }
 }
