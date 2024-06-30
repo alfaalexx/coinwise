@@ -180,6 +180,7 @@ class _RegisterState extends State<RegisterPage> {
                       controller: _nameController,
                       decoration: InputDecoration(
                         hintText: 'Masukkan Nama Lengkap',
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Image.asset(
@@ -225,6 +226,7 @@ class _RegisterState extends State<RegisterPage> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'user123@gmail.com',
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Image.asset(
@@ -270,6 +272,7 @@ class _RegisterState extends State<RegisterPage> {
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: 'Masukkan Kata Sandi Anda',
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Image.asset(
@@ -316,6 +319,7 @@ class _RegisterState extends State<RegisterPage> {
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: 'Konfirmasi Kata Sandi Anda',
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Image.asset(
