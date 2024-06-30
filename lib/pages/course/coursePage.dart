@@ -1,5 +1,7 @@
+import 'package:coinwise/pages/course/all_course_page.dart';
+import 'package:coinwise/pages/course/category_course_page.dart';
 import 'package:coinwise/pages/course/detailCoursePage.dart';
-import 'package:coinwise/pages/berita/beritaPage.dart';
+import 'package:coinwise/pages/course/new_course_page.dart';
 import 'package:coinwise/pages/profile/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:coinwise/widget/drawer_content_page.dart';
@@ -16,6 +18,7 @@ class CoursePage extends StatefulWidget {
 
 class _CoursePageState extends State<CoursePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   User? user;
   String displayName = "Loading...";
   String email = "Loading...";
@@ -56,13 +59,30 @@ class _CoursePageState extends State<CoursePage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffE5EBF3),
+      key: _scaffoldKey,
+      drawer: DrawerContentPage(),
       appBar: AppBar(
         backgroundColor: const Color(0xffE5EBF3),
         centerTitle: true,
         elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          child: IconButton(
+            icon: Image.asset('assets/images/icon_menu.png'),
+            onPressed: () {
+              // Menggunakan GlobalKey untuk membuka drawer
+              _scaffoldKey.currentState?.openDrawer();
+            },
+          ),
+        ),
         title: Text(
           "CoinWise",
           style: TextStyle(color: Colors.black),
@@ -109,7 +129,6 @@ class _CoursePageState extends State<CoursePage> {
           ),
         ],
       ),
-      drawer: DrawerContentPage(),
       body: SingleChildScrollView(
         child: Column(children: [
           Padding(
@@ -166,7 +185,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your detail page
+                                  DetailCoursePage(), // Create and use your detail page
                             ),
                           );
                         },
@@ -246,15 +265,7 @@ class _CoursePageState extends State<CoursePage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  BeritaPage(), // Create and use your detail page
-                            ),
-                          );
-                        },
+                        onTap: () {},
                         child: Card(
                           child: SizedBox(
                             width: 150,
@@ -336,7 +347,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your detail page
+                                  DetailCoursePage(), // Create and use your detail page
                             ),
                           );
                         },
@@ -421,7 +432,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your detail page
+                                  DetailCoursePage(), // Create and use your detail page
                             ),
                           );
                         },
@@ -525,7 +536,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your next page
+                                  NewCoursePage(), // Create and use your next page
                             ),
                           );
                         },
@@ -553,7 +564,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your detail page
+                                  DetailCoursePage(), // Create and use your detail page
                             ),
                           );
                         },
@@ -638,7 +649,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your detail page
+                                  DetailCoursePage(), // Create and use your detail page
                             ),
                           );
                         },
@@ -723,7 +734,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your detail page
+                                  DetailCoursePage(), // Create and use your detail page
                             ),
                           );
                         },
@@ -833,6 +844,10 @@ class _CoursePageState extends State<CoursePage> {
                       GestureDetector(
                         onTap: () {
                           // Define your navigation or action here
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CategoryCoursePage()));
                         },
                         child: Card(
                           child: Padding(
@@ -917,7 +932,7 @@ class _CoursePageState extends State<CoursePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BeritaPage(), // Create and use your next page
+                                  AllCoursePage(), // Create and use your next page
                             ),
                           );
                         },
@@ -946,8 +961,8 @@ class _CoursePageState extends State<CoursePage> {
                                 topLeft: Radius.circular(8.0),
                                 bottomLeft: Radius.circular(8.0),
                               ),
-                              child: Image.network(
-                                'https://via.placeholder.com/150',
+                              child: Image.asset(
+                                'assets/images/thumbnail_1.jpg',
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -960,7 +975,7 @@ class _CoursePageState extends State<CoursePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Course Title 1',
+                                      'Crypto Trading Untuk Pemula',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -968,7 +983,7 @@ class _CoursePageState extends State<CoursePage> {
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      'By James',
+                                      'By Niklas67',
                                       style: TextStyle(
                                         color: Colors.grey,
                                       ),
@@ -1001,8 +1016,8 @@ class _CoursePageState extends State<CoursePage> {
                                 topLeft: Radius.circular(8.0),
                                 bottomLeft: Radius.circular(8.0),
                               ),
-                              child: Image.network(
-                                'https://via.placeholder.com/150',
+                              child: Image.asset(
+                                'assets/images/thumbnail_5.jpg',
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -1015,7 +1030,7 @@ class _CoursePageState extends State<CoursePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Course Title 2',
+                                      'Strategi dalam Crypto',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -1023,7 +1038,7 @@ class _CoursePageState extends State<CoursePage> {
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      'By James',
+                                      'By Galem Firman',
                                       style: TextStyle(
                                         color: Colors.grey,
                                       ),
@@ -1056,8 +1071,8 @@ class _CoursePageState extends State<CoursePage> {
                                 topLeft: Radius.circular(8.0),
                                 bottomLeft: Radius.circular(8.0),
                               ),
-                              child: Image.network(
-                                'https://via.placeholder.com/150',
+                              child: Image.asset(
+                                'assets/images/thumbnail_3.jpg',
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -1070,7 +1085,7 @@ class _CoursePageState extends State<CoursePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Course Title 3',
+                                      'Pola Prediksi Harga',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -1078,7 +1093,7 @@ class _CoursePageState extends State<CoursePage> {
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      'By James',
+                                      'By Jerry Banfield',
                                       style: TextStyle(
                                         color: Colors.grey,
                                       ),

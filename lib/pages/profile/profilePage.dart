@@ -242,8 +242,8 @@ class _ProfilePageState extends State<ProfilePage>
                                     Expanded(
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          'https://via.placeholder.com/150',
+                                        child: Image.asset(
+                                          'assets/images/thumbnail_2.png',
                                           fit: BoxFit.cover,
                                           width: double.infinity,
                                         ),
@@ -286,8 +286,8 @@ class _ProfilePageState extends State<ProfilePage>
                                     Expanded(
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          'https://via.placeholder.com/150',
+                                        child: Image.asset(
+                                          'assets/images/thumbnail_1.jpg',
                                           fit: BoxFit.cover,
                                           width: double.infinity,
                                         ),

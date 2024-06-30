@@ -8,6 +8,11 @@ class DetailCoursePage extends StatefulWidget {
 
 class _DetailCoursePageState extends State<DetailCoursePage> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(229, 235, 243, 1),
@@ -30,7 +35,7 @@ class _DetailCoursePageState extends State<DetailCoursePage> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.asset(
-                  'assets/images/crypto_101.png', // Ganti dengan URL gambar Anda
+                  'assets/images/thumbnail_1.jpg', // Ganti dengan URL gambar Anda
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: 200.0,
@@ -47,7 +52,7 @@ class _DetailCoursePageState extends State<DetailCoursePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Crypto 101',
+                        'Crypto Trading Untuk Pemula',
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
@@ -55,19 +60,51 @@ class _DetailCoursePageState extends State<DetailCoursePage> {
                       ),
                       SizedBox(height: 8.0),
                       Text(
-                        'Course 101 Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+                        'Course Crypto Trading Untuk Pemula Yang Kamu Cari',
                         style: TextStyle(
                           fontSize: 16.0,
                           color: Colors.black54,
                         ),
                       ),
                       SizedBox(height: 8.0),
-                      Text(
-                        'Diupload pada Jun 18, 2024\nDurasi : 6 Menit\nSubtitle : Indonesia\nDibuat oleh James',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black54,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Diupload pada Jun 18, 2024',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                Text(
+                                  'Durasi : 6 Menit',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                Text(
+                                  'Subtitle : Indonesia',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                Text(
+                                  'Dibuat oleh Niklas67',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

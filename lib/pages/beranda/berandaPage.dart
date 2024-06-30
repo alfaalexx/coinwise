@@ -23,7 +23,7 @@ class _BerandaPageState extends State<BerandaPage> {
   final List<Map<String, dynamic>> videos = [
     {
       "username": "@Day Hawk",
-      "title": "Lorem ipsum dolor amet, consectetur...",
+      "title": "Kripto Paling Aman...",
       "content_video": "assets/videos/video1.mp4",
       "imageUrl":
           "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
@@ -32,8 +32,26 @@ class _BerandaPageState extends State<BerandaPage> {
     },
     {
       "username": "@Betty Cricket",
-      "title": "Kenali skema penipuan pada crypto",
-      "content_video": "assets/videos/Logo-coinwise-vid.mp4",
+      "title": "plis banget buat pemula dengeri gue...",
+      "content_video": "assets/videos/video_2.mp4",
+      "imageUrl":
+          "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+      "isLiked": false,
+      "isSave": false,
+    },
+    {
+      "username": "@BrianGanteng11",
+      "title": "Kripto itu apa sih bang???",
+      "content_video": "assets/videos/kripto_itu_apa_sih.mp4",
+      "imageUrl":
+          "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+      "isLiked": false,
+      "isSave": false,
+    },
+    {
+      "username": "@lebahganteng55",
+      "title": "Cara Trading Kripto Buat Pemula",
+      "content_video": "assets/videos/video_cara_pemula.mp4",
       "imageUrl":
           "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
       "isLiked": false,

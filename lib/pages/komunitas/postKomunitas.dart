@@ -35,6 +35,13 @@ class _PostkomunitasState extends State<Postkomunitas> {
     _getUserUID();
   }
 
+  @override
+  void dispose() {
+    postTitleController.dispose();
+    postDescriptionController.dispose();
+    super.dispose();
+  }
+
   Future<void> _getUserUID() async {
     final User? user = _auth.currentUser;
     if (user != null) {
