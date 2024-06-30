@@ -85,6 +85,14 @@ flutter:
     - assets/images/password.png
     - assets/images/name_icon.png
     - assets/images/animasi_4.png
+    - assets/images/thumbnail_1.jpg
+    - assets/images/thumbnail_2.png
+    - assets/images/thumbnail_3.jpg
+    - assets/images/thumbnail_4.jpg
+    - assets/images/thumbnail_5.jpg
+    - assets/images/thumbnail_6.jpg
+    - assets/images/thumbnail_7.png
+
 
     - assets/images/
     - assets/videos/
