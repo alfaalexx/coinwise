@@ -187,6 +187,7 @@ class _LoginState extends State<LoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'user123@gmail.com',
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Image.asset(
@@ -232,6 +233,7 @@ class _LoginState extends State<LoginPage> {
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                         hintText: 'Kata Sandi',
+                        hintStyle: TextStyle(color: Colors.grey),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Image.asset(
