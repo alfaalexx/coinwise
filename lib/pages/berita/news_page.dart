@@ -72,7 +72,7 @@ class NewsPage extends StatelessWidget {
         text,
         style: Theme.of(context)
             .textTheme
-            .headline6!
+            .titleLarge!
             .copyWith(fontWeight: FontWeight.bold),
       ),
     );
