@@ -1,4 +1,3 @@
-import 'package:coinwise/pages/komunitas/postKomunitas.dart';
 import 'package:coinwise/widget/drawer_content_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
