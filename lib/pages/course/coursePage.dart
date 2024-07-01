@@ -70,9 +70,9 @@ class _CoursePageState extends State<CoursePage> {
       key: _scaffoldKey,
       drawer: DrawerContentPage(),
       appBar: AppBar(
-        backgroundColor: const Color(0xffE5EBF3),
-        centerTitle: true,
         elevation: 0,
+        backgroundColor: Color.fromRGBO(229, 235, 243, 1),
+        iconTheme: const IconThemeData(color: Colors.black),
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
           child: IconButton(
@@ -83,11 +83,21 @@ class _CoursePageState extends State<CoursePage> {
             },
           ),
         ),
-        title: Text(
-          "CoinWise",
-          style: TextStyle(color: Colors.black),
+        title: Container(
+          height: 40,
+          child: TextField(
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: "Cari...",
+                hintStyle: TextStyle(
+                    color: Color.fromRGBO(139, 139, 139, 1), height: 3.5),
+                suffixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(15))),
+          ),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -131,28 +141,6 @@ class _CoursePageState extends State<CoursePage> {
       ),
       body: SingleChildScrollView(
         child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari..',
-                filled: true,
-                fillColor: Colors.white,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0x00000000), width: 2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF023E8A)),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Color(0xFF023E8A),
-                ),
-              ),
-            ),
-          ),
           Column(children: [
             Column(
               children: [

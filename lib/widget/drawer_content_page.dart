@@ -1,4 +1,5 @@
 import 'package:coinwise/pages/beranda/berandaPage.dart';
+import 'package:coinwise/pages/dashboard/dashboard_screen.dart';
 import 'package:coinwise/pages/profile/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -205,7 +206,7 @@ class _DrawerContentPageState extends State<DrawerContentPage> {
             onTap: () {
               // Navigate to the home page
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BerandaPage()));
+                  MaterialPageRoute(builder: (context) => DashboardScreen()));
             },
           ),
           ListTile(

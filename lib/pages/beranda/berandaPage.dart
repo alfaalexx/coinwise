@@ -1,3 +1,4 @@
+import 'package:coinwise/pages/beranda/Membership.dart';
 import 'package:coinwise/widget/drawer_content_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +12,7 @@ class BerandaPage extends StatefulWidget {
 }
 
 class _BerandaPageState extends State<BerandaPage> {
+  static int likeBeranda = 0;
   bool _showInput = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -22,29 +24,26 @@ class _BerandaPageState extends State<BerandaPage> {
 
   final List<Map<String, dynamic>> videos = [
     {
-      "username": "@Day Hawk",
+      "username": "@Betty Cricket",
       "title": "Kripto Paling Aman...",
       "content_video": "assets/videos/video1.mp4",
-      "imageUrl":
-          "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+      "imageUrl": "assets/images/profil_beranda1.png",
       "isLiked": false,
       "isSave": false,
     },
     {
-      "username": "@Betty Cricket",
+      "username": "@Day Hawk",
       "title": "plis banget buat pemula dengeri gue...",
       "content_video": "assets/videos/video_2.mp4",
-      "imageUrl":
-          "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+      "imageUrl": "assets/images/profil_beranda2.png",
       "isLiked": false,
       "isSave": false,
     },
     {
-      "username": "@BrianGanteng11",
+      "username": "@BrianPro567",
       "title": "Kripto itu apa sih bang???",
       "content_video": "assets/videos/kripto_itu_apa_sih.mp4",
-      "imageUrl":
-          "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+      "imageUrl": "assets/images/profil_beranda3.png",
       "isLiked": false,
       "isSave": false,
     },
@@ -52,8 +51,7 @@ class _BerandaPageState extends State<BerandaPage> {
       "username": "@lebahganteng55",
       "title": "Cara Trading Kripto Buat Pemula",
       "content_video": "assets/videos/video_cara_pemula.mp4",
-      "imageUrl":
-          "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+      "imageUrl": "assets/images/profil_beranda4.png",
       "isLiked": false,
       "isSave": false,
     },
@@ -145,7 +143,13 @@ class _BerandaPageState extends State<BerandaPage> {
                 Container(
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const membership(),
+                          ));
+                    },
                     child: Text(
                       "Subscribe",
                       style: TextStyle(
@@ -585,45 +589,67 @@ class _BerandaPageState extends State<BerandaPage> {
         ]));
   }
 
-  Widget _getProfileVideoAction({String}) {
-    return Stack(children: [
-      Container(
+  Widget _getProfileVideoAction() {
+    String imageUrl = videos[videoIndex]['imageUrl']!;
+
+    return Stack(
+      children: [
+        Container(
           margin: EdgeInsets.only(top: 10.0),
           width: ActionWidgetSize,
           height: ActionWidgetSize,
-          child: Column(children: [
-            Container(
-              padding: EdgeInsets.all(1.0),
-              height: ProfileImageSize,
-              width: ProfileImageSize,
-              decoration: BoxDecoration(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(1.0),
+                height: ProfileImageSize,
+                width: ProfileImageSize,
+                decoration: BoxDecoration(
                   color: Color.fromRGBO(2, 62, 138, 1),
                   border: Border.all(
                       width: 1, color: Color.fromRGBO(2, 62, 138, 1)),
-                  borderRadius: BorderRadius.circular(ProfileImageSize / 2)),
-              child: CachedNetworkImage(
-                imageUrl:
-                    "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                  borderRadius: BorderRadius.circular(ProfileImageSize / 2),
+                ),
+                child: ClipOval(
+                  child: imageUrl.startsWith('assets/')
+                      ? Image.asset(
+                          imageUrl,
+                          fit: BoxFit.cover,
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+                ),
               ),
-            ),
-          ])),
-      Positioned(
+            ],
+          ),
+        ),
+        Positioned(
           width: 15.0,
           height: 15.0,
           bottom: 5,
           left: ((ActionWidgetSize / 2) - (15 / 2)),
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(15.0)),
-          )),
-      Positioned(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+          ),
+        ),
+        Positioned(
           bottom: 0,
           left: ((ActionWidgetSize / 2) - (FollowActionIconSize / 2)),
-          child: Icon(Icons.add_circle,
-              color: Color.fromARGB(255, 255, 43, 84),
-              size: FollowActionIconSize))
-    ]);
+          child: Icon(
+            Icons.add_circle,
+            color: Color.fromARGB(255, 255, 43, 84),
+            size: FollowActionIconSize,
+          ),
+        ),
+      ],
+    );
   }
 }

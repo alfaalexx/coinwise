@@ -232,7 +232,7 @@ class _KomunitasPageState extends State<KomunitasPage> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         decoration: BoxDecoration(color: Colors.white),
                         child: Column(
                           children: [
